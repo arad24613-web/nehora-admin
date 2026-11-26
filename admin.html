@@ -63,13 +63,73 @@ pre{background:#faf7ee;border-radius:10px;padding:10px;font-size:12px;overflow:a
 <body>
 <div id="app"></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 (function(){'use strict';
 /* ===== הגדרות חיבור: למלא את כתובת הפרויקט ואת המפתח הציבורי (anon) בלבד. לעולם לא service_role ===== */
-const CFG=Object.assign({url:'',key:'',publicUrl:''},window.NEHORA_CONFIG||{});
+const CFG=Object.assign({url:'https://zbbwphvgsmfncsqdgnvq.supabase.co',key:'sb_publishable_Kc8uovy3o4YGuT9setkJEQ_8YAVG9Gh',publicUrl:''},window.NEHORA_CONFIG||{});
 const app=document.getElementById('app');
-let sb=null,session=null,subs=[],uid=0,badgeTimer=null;
+let sb=null,session=null,subs=[],uid=0,badgeTimer=null,shellOn=false,manualOut=false;
+/*==AUTHKIT==*/
+function decodeJwt(t){try{const p=String(t).split('.')[1];return JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){return null}}
+function errInfo(e){
+  const i={msg:'',status:null,code:null};
+  if(e==null)return i;
+  if(typeof e==='string'){i.msg=e;return i}
+  i.msg=String(e.message||e.error_description||e.msg||(typeof e.error==='string'?e.error:'')||'');
+  const st=e.statusCode!=null&&!isNaN(Number(e.statusCode))?e.statusCode:(e.status!=null?e.status:null);
+  i.status=st!=null&&!isNaN(Number(st))?Number(st):null;
+  i.code=e.code!=null?String(e.code):(e.error_code!=null?String(e.error_code):null);
+  if(e.details&&typeof e.details==='string'&&!i.msg)i.msg=e.details;
+  return i;
+}
+function friendly(e){if(e&&e.friendly)return e;const x=new Error(errText(e));x.friendly=true;return x}
+function errText(e){
+  if(e&&e.friendly)return e.message;
+  const {msg,status,code}=errInfo(e),m=msg.toLowerCase();
+  let t;
+  if(status===401||code==='PGRST301'||code==='PGRST303'||/jwt|not authenticated|invalid token|token.*expired/.test(m))t='ההתחברות פגה או לא תקינה. יש להתנתק ולהתחבר מחדש.';
+  else if(/^PGRST20[245]$/.test(code||'')||/schema cache/.test(m))t='Supabase עדיין לא רענן את מבנה הטבלאות והפונקציות. ב-SQL Editor יש להריץ: notify pgrst, \'reload schema\'; ואז לנסות שוב.';
+  else if(code==='42501'||status===403||/row-level security|violates row|permission denied|not allowed|unauthorized/.test(m))t='אין הרשאה לבצע את הפעולה. בדקו שהחשבון רשום כמנהל (טבלת admins).';
+  else if(/bucket not found/.test(m))t='דלי האחסון "media" לא קיים בפרויקט. יש להריץ מחדש את חלק האחסון בקובץ schema.sql.';
+  else if(/maximum allowed size|payload too large/.test(m)||status===413)t='הקובץ גדול מדי (מעל 5MB).';
+  else if(/mime type|not supported|invalid.*type/.test(m)&&/storage|mime|image/.test(m))t='סוג הקובץ אינו מותר. אפשר JPG, PNG, WEBP או GIF.';
+  else if(/failed to fetch|networkerror|load failed|network request failed/.test(m))t='אין חיבור לשרת. בדקו את האינטרנט ונסו שוב.';
+  else if(code==='23505')t='כבר קיים פריט עם אותם נתונים.';
+  else if(code==='23502')t='חסר שדה חובה.';
+  else if(code==='23503')t='הפריט מקושר לנתונים אחרים ולכן לא ניתן לבצע את הפעולה.';
+  else if(code==='23514'||code==='22P02'||code==='22001'||code==='22007'||code==='22008')t='אחד הערכים אינו תקין או ארוך מדי. בדקו את השדות.';
+  else if(code==='PGRST116')t='הפריט לא נמצא.';
+  else if(msg)t=msg;
+  else t='הפעולה נכשלה ללא הסבר מהשרת';
+  const tech=[status!=null?status:null,code].filter(x=>x!=null&&x!=='').join('/');
+  return tech?t+' ('+tech+')':t;
+}
+function makeAuthFetch(o){
+  const base=o.base||globalThis.fetch.bind(globalThis);
+  const guarded=u=>/\/(rest|storage)\/v1\//.test(u);
+  let lost=false;
+  return async function(input,init){
+    if(typeof input!=='string'||!guarded(input))return base(input,init);
+    const send=async tok=>{
+      const hd=new Headers((init&&init.headers)||{});
+      hd.set('apikey',o.key);
+      if(tok)hd.set('Authorization','Bearer '+tok);
+      return base(input,Object.assign({},init,{headers:hd}));
+    };
+    let s=null;try{s=await o.getSession()}catch(e){}
+    if(s&&s.expires_at&&s.expires_at*1000-Date.now()<60000){try{s=(await o.refresh())||s}catch(e){}}
+    if(!s||!s.access_token)return base(input,init);
+    let r=await send(s.access_token);
+    if(r.status===401){
+      let n=null;try{n=await o.refresh()}catch(e){}
+      if(n&&n.access_token)r=await send(n.access_token);
+      if(r.status===401&&!lost){lost=true;try{o.onAuthLost&&o.onAuthLost()}catch(e){}setTimeout(()=>{lost=false},5000)}
+    }
+    return r;
+  };
+}
+/*==END==*/
+
 
 /* ===== כלי DOM (ללא innerHTML: תוכן משתמשים לעולם לא מוזרק כ-HTML) ===== */
 function h(tag,props,...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(props||{})){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(k==='value')e.value=v;else if(k==='checked')e.checked=!!v;else e.setAttribute(k,v===true?'':v)}kids.flat(9).forEach(c=>{if(c==null||c===false)return;e.append(c.nodeType?c:document.createTextNode(String(c)))});return e}
@@ -86,7 +146,7 @@ const debounce=(f,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(
 function toast(msg,type){const t=h('div',{class:'toast '+(type==='err'?'err':''),role:'status'},msg);document.getElementById('toasts').append(t);setTimeout(()=>t.remove(),type==='err'?6000:3500)}
 function modal(title,body,opts={}){const ov=h('div',{class:'ov',role:'dialog','aria-modal':'true'});const box=h('div',{class:'md',style:opts.wide?'max-width:760px':null},h('h3',{},title),body);ov.append(box);const close=()=>{ov.remove();document.removeEventListener('keydown',esc)};const esc=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',esc);ov.addEventListener('mousedown',e=>{if(e.target===ov)close()});document.body.append(ov);return{close,box}}
 function confirmDlg(msg,ok='מחיקה'){return new Promise(res=>{const m=modal('אישור פעולה',h('div',{},h('p',{style:'margin-bottom:14px;line-height:1.6'},msg),h('div',{class:'ft'},btn('ביטול',null,'g',()=>{m.close();res(false)}),btn(ok,'trash','d',()=>{m.close();res(true)}))))})}
-const fail=e=>{toast((e&&e.message)||'שגיאה לא צפויה','err');return false};
+const fail=e=>{console.error('[admin]',e);toast(errText(e),'err');return false};
 
 /* ===== מנוי לשינויים בזמן אמת ===== */
 function watch(table,cb,event='*'){const ch=sb.channel('rt-'+table+'-'+(++uid)).on('postgres_changes',{event,schema:'public',table},debounce(cb,250)).subscribe();subs.push(ch)}
@@ -102,8 +162,10 @@ async function uploadImage(file,folder){
   if(!MIME[file.type])throw new Error('אפשר להעלות רק JPG, PNG, WEBP או GIF');
   if(file.size>5*1024*1024)throw new Error('התמונה גדולה מ-5MB');
   const path=`${folder||'misc'}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${MIME[file.type]}`;
+  const {data:cs}=await sb.auth.getSession();
+  if(!cs||!cs.session)throw friendly({status:401});
   const {error}=await sb.storage.from('media').upload(path,file,{contentType:file.type,upsert:false});
-  if(error)throw error;
+  if(error){console.error('[upload]',error);throw friendly(error)}
   return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
 }
 function buildForm(fields,init,extras){
@@ -113,7 +175,7 @@ function buildForm(fields,init,extras){
     const wrap=(inner,cls)=>h('label',{class:'fld '+(cls||'')},inner);
     if(f.t==='bool'){input=h('input',{type:'checkbox',checked:val,'data-k':f.k});get=()=>input.checked;node=wrap([input,h('span',{},f.l)],'ck')}
     else if(f.t==='img'){let url=val||null;const pv=h('img',{alt:'',style:url?null:'display:none',src:url||null}),st=h('small',{},'');const fi=h('input',{type:'file',accept:'image/jpeg,image/png,image/webp,image/gif','data-k':f.k});
-      fi.addEventListener('change',async()=>{const file=fi.files[0];if(!file)return;st.textContent='מעלה...';try{url=await uploadImage(file,f.folder);pv.src=url;pv.style.display='';st.textContent='הועלתה'}catch(e){st.textContent='';fail(e)}});
+      fi.addEventListener('change',async()=>{const file=fi.files[0];if(!file)return;st.textContent='מעלה...';try{url=await uploadImage(file,f.folder);pv.src=url;pv.style.display='';st.textContent='הועלתה'}catch(e){st.textContent='';fail(e)}finally{fi.value=''}});
       const clr=btn('הסרה',null,'g',()=>{url=null;pv.style.display='none';pv.removeAttribute('src');fi.value=''});
       get=()=>url;node=h('div',{class:'fld'},h('span',{},f.l),h('div',{class:'img'},pv,h('div',{},fi,st,clr)))}
     else if(f.t==='hours'){const o=h('input',{type:'time',value:val&&val.open||'','data-k':f.k+'-open'}),c=h('input',{type:'time',value:val&&val.close||'','data-k':f.k+'-close'});get=()=>o.value&&c.value?{open:o.value,close:c.value}:null;f.check=()=>{if(!o.value&&!c.value)return null;if(!o.value||!c.value)return 'יש להזין שעת פתיחה וגם שעת סגירה';if(o.value>=c.value)return 'שעת הסגירה חייבת להיות אחרי הפתיחה'};node=h('div',{class:'fld'},h('span',{},f.l),h('div',{class:'two'},h('label',{},h('small',{},'פתיחה'),o),h('label',{},h('small',{},'סגירה'),c)))}
@@ -146,9 +208,9 @@ async function crud(root,cfg){
   let rows=[],extras={};
   const sorter=cfg.sort||(cfg.orderable?((a,b)=>(a.sort_order-b.sort_order)||String(b.created_at).localeCompare(String(a.created_at))):((a,b)=>String(b.created_at).localeCompare(String(a.created_at))));
   async function load(){
-    try{if(cfg.init)extras=await cfg.init()}catch(e){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+e.message));return}
+    try{if(cfg.init)extras=await cfg.init()}catch(e){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(e)));return}
     let q=sb.from(cfg.table).select(cfg.select||'*');if(cfg.eq)for(const[k,v]of Object.entries(cfg.eq))q=q.eq(k,v);
-    const {data,error}=await q;if(error){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+error.message));return}
+    const {data,error}=await q;if(error){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}
     rows=(data||[]).slice().sort(sorter);paint();
   }
   const patch=async(row,obj)=>{const {error}=await sb.from(cfg.table).update(obj).eq('id',row.id);if(error)return fail(error);load()};
@@ -212,23 +274,57 @@ async function pDashboard(root){
     root.replaceChildren(h('div',{class:'ph'},h('h2',{},'לוח בקרה')),h('div',{class:'grid'},S('כניסות ב-30 הימים האחרונים',total,'dash'),S('כניסות היום',today?today.views:0,'dash'),S('עסקים רשומים',`${biz} (${pub} מפורסמים)`,'store'),S('פניות חדשות',inq,'inbox'),S('ביקורות ממתינות לאישור',rev,'star'),S('פרסומות פעילות',activePromos,'tag')),
       h('div',{class:'two'},h('div',{class:'card'},h('b',{},'כניסות ב-14 הימים האחרונים'),last.length?h('div',{class:'bars'},last.map(r=>h('div',{style:`height:${Math.round(r.views/max*100)}%`,title:`${fmtD(r.day)}: ${r.views}`}))):h('div',{class:'empty'},'עדיין אין נתוני כניסות.')),
         h('div',{class:'card'},h('b',{},'החיפושים הנפוצים בעוזר החכם'),h('p',{style:'color:#6d7561;font-size:12.5px;margin:2px 0 8px'},'מילים בודדות בלבד, ללא פרטים מזהים.'),terms.data.length?h('table',{},h('tbody',{},terms.data.map(t=>h('tr',{},h('td',{},t.term),h('td',{class:'ac'},t.hits))))):h('div',{class:'empty'},'עדיין אין חיפושים.'))));
-  }catch(e){root.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+e.message))}
+  }catch(e){root.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(e)))}
 }
 
 function pBusinesses(root){return crud(root,{title:'עסקים ובעלי מקצוע',table:'businesses',folderless:1,
-  fields:[T('name','שם העסק',1),SEL('category','קטגוריה',BIZ_CATS.map(c=>[c,c]),1),A('description','תיאור מקצועי'),IMG('logo_url','לוגו','logos'),IMG('image_url','תמונת העסק','businesses'),{k:'hours',l:'שעות פתיחה',t:'hours'},TEL('phone','טלפון'),{k:'whatsapp',l:'וואטסאפ',t:'text',v:'wa',hint:'מספר או קישור wa.me',ph:'0501234567'},B('featured','עסק מומלץ'),B('sponsored','עסק ממומן (יסומן "ממומן" באתר)'),SEL('status','סטטוס',[['draft','טיוטה'],['published','מפורסם'],['hidden','מוסתר (לא נמחק)']],1)],
+  fields:[T('name','שם העסק',1),SEL('category','קטגוריה',BIZ_CATS.map(c=>[c,c]),1),A('description','תיאור מקצועי'),IMG('logo_url','לוגו','logos'),IMG('image_url','תמונת העסק','businesses'),{k:'hours',l:'שעות פתיחה',t:'hours'},TEL('phone','טלפון'),T('area','אזור פעילות'),{k:'whatsapp',l:'וואטסאפ',t:'text',v:'wa',hint:'מספר או קישור wa.me',ph:'0501234567'},B('featured','עסק מומלץ'),B('sponsored','עסק ממומן (יסומן "ממומן" באתר)'),SEL('status','סטטוס',[['draft','טיוטה'],['published','מפורסם'],['hidden','מוסתר (לא נמחק)']],1)],
   defaults:{status:'draft'},
   cols:[['שם',r=>h('b',{},r.name)],['קטגוריה',r=>r.category||''],['סטטוס',statusBdg],['סימונים',r=>[r.featured&&bdg('מומלץ','w'),' ',r.sponsored&&bdg('ממומן','w')]],['טלפון',r=>r.phone||'']],
   toggle:{on:r=>r.status==='published',set:(r,on)=>({status:on?'published':'hidden'}),offTitle:'הסתרה (ללא מחיקה)',onTitle:'פרסום'},
   preview:v=>({title:v.name,sub:v.category,body:v.description,img:v.image_url}),
   empty:'עדיין לא נוספו עסקים.'})}
 
+async function pBizReq(root){
+  let filter='pending',rows=[];const box=h('div'),pills=h('div',{class:'pills'});
+  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'עסקים ממתינים לאישור')),pills,box);
+  const FIELDS=[T('name','שם העסק',1),SEL('category','קטגוריה',BIZ_CATS.map(c=>[c,c]),1),A('description','תיאור העסק',1),TEL('phone','טלפון',1),{k:'whatsapp',l:'וואטסאפ',t:'text',v:'wa',hint:'מספר או קישור wa.me',ph:'0501234567'},{k:'hours',l:'שעות פעילות',t:'hours'},T('area','אזור פעילות'),IMG('logo_url','לוגו','logos'),IMG('image_url','תמונת העסק','businesses')];
+  async function load(){
+    const {data,error}=await sb.from('business_requests').select('*').order('created_at',{ascending:false});
+    if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}
+    rows=data;paint();refreshBadges();
+  }
+  const stBdg=r=>r.status==='approved'?bdg('אושר ופורסם'):r.status==='rejected'?bdg('נדחה','w'):bdg('ממתין לאישור');
+  async function save(r,v){const payload={};FIELDS.forEach(f=>{payload[f.k]=v[f.k]===undefined?null:v[f.k]});const {error}=await sb.from('business_requests').update(payload).eq('id',r.id);if(error){fail(error);return false}return true}
+  function open(r){
+    const fm=buildForm(FIELDS,r),why=h('input',{class:'inp','data-k':'reject_reason',maxlength:500,placeholder:'סיבת הדחייה (אופציונלי, לשימושכם בלבד)',value:r.reject_reason||''});
+    const m=modal('בקשת הוספת עסק',h('div',{},
+      h('p',{style:'font-size:13px;color:#6d7561;margin-bottom:10px'},'התקבלה ב-',fmtDT(r.created_at),' · ',stBdg(r),r.status==='approved'?' (העסק כבר מוצג באתר ומנוהל בדף "עסקים")':''),
+      fm.el,
+      r.status!=='approved'&&h('label',{class:'fld'},h('span',{},'דחיית הבקשה'),why),
+      h('div',{class:'ft'},
+        btn('סגירה',null,'g',()=>m.close()),
+        r.status!=='approved'&&btn('דחייה','x','g',async()=>{const {error}=await sb.from('business_requests').update({status:'rejected',reject_reason:why.value.trim()||null,reviewed_at:new Date().toISOString()}).eq('id',r.id);if(error)return fail(error);m.close();toast('הבקשה נדחתה. העסק לא יפורסם');load()}),
+        btn('שמירת שינויים','check','g',async()=>{const v=fm.values(),msg=fm.validate(v);if(msg)return toast(msg,'err');if(!await save(r,v))return;m.close();toast('השינויים נשמרו');load()}),
+        r.status!=='approved'&&btn('אישור ופרסום','check',null,async()=>{const v=fm.values(),msg=fm.validate(v);if(msg)return toast(msg,'err');if(!await save(r,v))return;const {error}=await sb.rpc('approve_business_request',{p_id:r.id});if(error)return fail(error);m.close();toast('העסק אושר ופורסם באתר');load()}))),{wide:true});
+  }
+  async function del(r){if(!await confirmDlg('למחוק את הבקשה לצמיתות? (עסק שכבר אושר לא יימחק מהאתר)'))return;const {error}=await sb.from('business_requests').delete().eq('id',r.id);if(error)return fail(error);toast('הבקשה נמחקה');load()}
+  function paint(){
+    const L=[['pending','ממתינים'],['approved','אושרו'],['rejected','נדחו'],['all','הכל']];
+    pills.replaceChildren(...L.map(([k,l])=>h('button',{class:'pill'+(filter===k?' on':''),onclick:()=>{filter=k;paint()}},`${l} (${k==='all'?rows.length:rows.filter(r=>r.status===k).length})`)));
+    const list=rows.filter(r=>filter==='all'||r.status===filter);
+    if(!list.length){box.replaceChildren(h('div',{class:'card empty'},filter==='pending'?'אין עסקים שממתינים לאישור.':'אין בקשות להצגה.'));return}
+    box.replaceChildren(h('div',{class:'tw'},h('table',{},h('thead',{},h('tr',{},['שם העסק','קטגוריה','טלפון','אזור','התקבל','סטטוס',''].map(x=>h('th',{},x)))),h('tbody',{},list.map(r=>h('tr',{'data-id':r.id},h('td',{},h('b',{},r.name)),h('td',{},r.category||''),h('td',{dir:'ltr',style:'text-align:right'},r.phone||''),h('td',{},r.area||''),h('td',{},fmtDT(r.created_at)),h('td',{},stBdg(r)),h('td',{class:'ac'},btn(r.status==='pending'?'צפייה וטיפול':'פרטים','eye','g',()=>open(r)),ibtn('trash','g',()=>del(r),'מחיקה'))))))));
+  }
+  watch('business_requests',load);await load();
+}
+
 async function pReviews(root){
   let filter='pending',rows=[],names={};const box=h('div'),pills=h('div',{class:'pills'});
   root.replaceChildren(h('div',{class:'ph'},h('h2',{},'ביקורות')),pills,box);
   async function load(){
     const [r,b]=await Promise.all([sb.from('reviews').select('*').order('created_at',{ascending:false}),sb.from('businesses').select('id,name')]);
-    if(r.error||b.error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+(r.error||b.error).message));return}
+    if(r.error||b.error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(r.error||b.error)));return}
     rows=r.data;names=Object.fromEntries(b.data.map(x=>[x.id,x.name]));paint();refreshBadges();
   }
   const setStatus=async(r,s)=>{const {error}=await sb.from('reviews').update({status:s}).eq('id',r.id);if(error)return fail(error);toast(s==='approved'?'הביקורת אושרה ותוצג באתר':'הביקורת נדחתה');load()};
@@ -248,7 +344,7 @@ async function pInquiries(root){
   const sel=h('select',{class:'inp',style:'max-width:180px',onchange:e=>{fs=e.target.value;paint()}},[['all','כל הסטטוסים'],['new','חדשות'],['in_progress','בטיפול'],['done','טופלו']].map(([v,l])=>h('option',{value:v},l)));
   const inp=h('input',{class:'inp',style:'max-width:240px',placeholder:'חיפוש לפי שם, פרטים או תוכן','aria-label':'חיפוש פניות',oninput:e=>{q=e.target.value.trim().toLowerCase();paint()}});
   root.replaceChildren(h('div',{class:'ph'},h('h2',{},'פניות תושבים'),inp,sel),box);
-  async function load(){const {data,error}=await sb.from('inquiries').select('*').order('created_at',{ascending:false});if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+error.message));return}rows=data;paint();refreshBadges()}
+  async function load(){const {data,error}=await sb.from('inquiries').select('*').order('created_at',{ascending:false});if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}rows=data;paint();refreshBadges()}
   const setS=async(r,s)=>{const {error}=await sb.from('inquiries').update({status:s}).eq('id',r.id);if(error)return fail(error);load()};
   async function del(r){if(!await confirmDlg('למחוק את הפנייה?'))return;const {error}=await sb.from('inquiries').delete().eq('id',r.id);if(error)return fail(error);toast('הפנייה נמחקה');load()}
   function paint(){
@@ -267,7 +363,7 @@ async function pInquiries(root){
 
 async function pBoard(root){
   const speedBox=h('div'),host=h('div');root.replaceChildren(speedBox,host);
-  let st={};try{st=await getSettings()}catch(e){speedBox.replaceChildren(h('div',{class:'err'},e.message))}
+  let st={};try{st=await getSettings()}catch(e){speedBox.replaceChildren(h('div',{class:'err'},errText(e)))}
   const cur=typeof st.board_speed==='number'?st.board_speed:0.35,lbl=h('b',{},String(cur)),rng=h('input',{type:'range',min:'0.1',max:'1.2',step:'0.05',value:cur,'aria-label':'מהירות לוח המודעות',oninput:e=>lbl.textContent=e.target.value});
   speedBox.replaceChildren(h('div',{class:'card',style:'margin-bottom:14px'},h('div',{class:'row'},h('b',{},'מהירות התנועה של הלוח'),rng,lbl,btn('שמירה','check','g',async()=>{try{await putSetting('board_speed',Number(rng.value));toast('המהירות עודכנה באתר')}catch(e){fail(e)}}))));
   await crud(host,{title:'לוח מודעות',table:'announcements',orderable:true,
@@ -339,7 +435,7 @@ async function pAssistant(root){
   const host=h('div'),stats=h('div');root.replaceChildren(host,stats);
   async function paintStats(){
     const {data,error}=await sb.from('search_stats').select('*').order('hits',{ascending:false}).limit(25);
-    if(error){stats.replaceChildren(h('div',{class:'err'},error.message));return}
+    if(error){stats.replaceChildren(h('div',{class:'err'},errText(error)));return}
     stats.replaceChildren(h('div',{class:'card',style:'margin-top:16px'},h('div',{class:'row'},h('b',{style:'margin-inline-end:auto'},'סטטיסטיקת חיפושים מצטברת (מילים בלבד, ללא פרטים אישיים)'),data.length>0&&btn('איפוס הסטטיסטיקה','trash','d',async()=>{if(!await confirmDlg('לאפס את כל סטטיסטיקת החיפושים?','איפוס'))return;const {error}=await sb.from('search_stats').delete().neq('term','');if(error)return fail(error);paintStats()}) ),data.length?h('table',{style:'margin-top:8px'},h('tbody',{},data.map(t=>h('tr',{},h('td',{},t.term),h('td',{class:'ac'},t.hits))))):h('div',{class:'empty'},'עדיין אין חיפושים.')));
   }
   await crud(host,{title:'מאגר הידע של העוזר החכם',table:'kb_entries',
@@ -358,14 +454,14 @@ async function pAssistant(root){
 const CATS=[['biz','עסקים'],['news','עדכונים'],['tel','טלפונים חשובים'],['svc','שירותים'],['events','אירועים'],['chabad','אירועי חב״ד'],['religion','דת וקהילה'],['contact','צור קשר'],['ads','מודעות']];
 async function pDesign(root){
   root.replaceChildren(h('div',{class:'empty'},'טוען...'));
-  let st;try{st=await getSettings()}catch(e){root.replaceChildren(h('div',{class:'err'},e.message));return}
+  let st;try{st=await getSettings()}catch(e){root.replaceChildren(h('div',{class:'err'},errText(e)));return}
   const texts=Object.assign({news_heading:'',board_heading:''},st.texts||{});
   let logo=st.logo&&st.logo.url||null;
   let cats=CATS.map(([key,label])=>({key,label,visible:true}));
   if(Array.isArray(st.categories)){const m=Object.fromEntries(st.categories.map(c=>[c.key,c]));const ordered=st.categories.map(c=>CATS.find(x=>x[0]===c.key)&&{key:c.key,label:c.label||CATS.find(x=>x[0]===c.key)[1],visible:c.visible!==false}).filter(Boolean);CATS.forEach(([key,label])=>{if(!m[key])ordered.push({key,label,visible:true})});cats=ordered}
   const catBox=h('div'),prev=h('div',{class:'mini'});
   const logoImg=h('img',{alt:'',style:logo?'max-width:260px;display:block;margin-top:6px':'display:none',src:logo||null}),logoSt=h('small',{},'');
-  const logoIn=h('input',{type:'file',accept:'image/jpeg,image/png,image/webp,image/gif','data-k':'logo',onchange:async()=>{const f=logoIn.files[0];if(!f)return;logoSt.textContent='מעלה...';try{logo=await uploadImage(f,'logo');logoImg.src=logo;logoImg.style.display='block';logoSt.textContent='הועלה (יתפרסם בלחיצה על פרסום)'}catch(e){logoSt.textContent='';fail(e)}}});
+  const logoIn=h('input',{type:'file',accept:'image/jpeg,image/png,image/webp,image/gif','data-k':'logo',onchange:async()=>{const f=logoIn.files[0];if(!f)return;logoSt.textContent='מעלה...';try{logo=await uploadImage(f,'logo');logoImg.src=logo;logoImg.style.display='block';logoSt.textContent='הועלה (יתפרסם בלחיצה על פרסום)'}catch(e){logoSt.textContent='';fail(e)}finally{logoIn.value=''}}});
   const tNews=h('input',{class:'inp','data-k':'news_heading',value:texts.news_heading,placeholder:'הודעות ועדכונים אחרונים',maxlength:80}),tBoard=h('input',{class:'inp','data-k':'board_heading',value:texts.board_heading,placeholder:'לוח מודעות',maxlength:80});
   function paintCats(){
     catBox.replaceChildren(...cats.map((c,i)=>h('div',{class:'row',style:'margin-bottom:6px','data-key':c.key},h('input',{class:'inp',style:'max-width:220px',value:c.label,maxlength:30,'aria-label':'שם הקטגוריה',oninput:e=>{c.label=e.target.value;paintPrev()}}),ibtn('up','g',()=>{if(i){[cats[i],cats[i-1]]=[cats[i-1],cats[i]];paintCats()}},'העלאה'),ibtn('down','g',()=>{if(i<cats.length-1){[cats[i],cats[i+1]]=[cats[i+1],cats[i]];paintCats()}},'הורדה'),ibtn(c.visible?'eye':'eyeoff','g',()=>{c.visible=!c.visible;paintCats()},c.visible?'הסתרה':'הצגה'),!c.visible&&bdg('מוסתרת','m'))));paintPrev();
@@ -386,7 +482,7 @@ async function pHistory(root){
   let tf='all',rows=[];const box=h('div');
   const sel=h('select',{class:'inp',style:'max-width:180px',onchange:e=>{tf=e.target.value;load()}},[['all','כל הטבלאות'],...Object.entries(TNAME)].map(([v,l])=>h('option',{value:v},l)));
   root.replaceChildren(h('div',{class:'ph'},h('h2',{},'היסטוריית שינויים'),sel),box);
-  async function load(){let q=sb.from('change_history').select('*').order('changed_at',{ascending:false}).limit(100);if(tf!=='all')q=q.eq('table_name',tf);const {data,error}=await q;if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+error.message));return}rows=data;paint()}
+  async function load(){let q=sb.from('change_history').select('*').order('changed_at',{ascending:false}).limit(100);if(tf!=='all')q=q.eq('table_name',tf);const {data,error}=await q;if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}rows=data;paint()}
   const title=r=>{const d=r.new_data||r.old_data||{};return d.name||d.title||d.topic||d.author||(d.data&&(d.data.title||d.data.name||d.data.topic))||r.row_id};
   function details(r){const o=r.old_data||{},n=r.new_data||{},keys=[...new Set([...Object.keys(o),...Object.keys(n)])].filter(k=>JSON.stringify(o[k])!==JSON.stringify(n[k])&&k!=='updated_at');const m=modal('פרטי השינוי',h('div',{},h('pre',{},keys.length?keys.map(k=>`${k}:\n  לפני: ${JSON.stringify(o[k])}\n  אחרי: ${JSON.stringify(n[k])}`).join('\n'):'אין הבדלים'),h('div',{class:'ft'},btn('סגירה',null,'g',()=>m.close()))),{wide:true})}
   async function restore(r){
@@ -403,13 +499,47 @@ async function pHistory(root){
 }
 
 /* ===== מעטפת, ניווט והתראות ===== */
-const PAGES=[['dashboard','לוח בקרה','dash',pDashboard],['businesses','עסקים','store',pBusinesses],['reviews','ביקורות','star',pReviews,'rev'],['inquiries','פניות תושבים','inbox',pInquiries,'inq'],['board','לוח מודעות','mega',pBoard],['promos','פרסומות','tag',pPromos],['content','תוכן וקטגוריות','layers',pContent],['assistant','עוזר חכם','bot',pAssistant],['design','עיצוב האתר','pal',pDesign],['history','היסטוריה ושחזור','hist',pHistory]];
+
+async function pDiag(root){
+  const out=h('div'),rep=[];
+  const row=(name,ok,detail)=>{rep.push((ok===true?'[תקין] ':ok===false?'[כשל] ':'[מידע] ')+name+': '+detail);out.append(h('div',{class:'card',style:'margin-bottom:8px'},h('b',{},(ok===true?'תקין · ':ok===false?'כשל · ':'')+name),h('div',{style:'font-size:13.5px;margin-top:4px;word-break:break-word;white-space:pre-wrap',dir:'auto'},detail)))};
+  const step=async(name,fn)=>{try{const d=await fn();row(name,d.ok,d.t)}catch(e){row(name,false,errText(e))}};
+  async function run(){
+    out.replaceChildren();rep.length=0;rep.push('דוח בדיקת חיבור נהורה+ '+new Date().toISOString());
+    let tok=null;
+    await step('סשן והאסימון',async()=>{
+      const {data,error}=await sb.auth.getSession();if(error)throw error;
+      const s=data&&data.session;if(!s)return{ok:false,t:'אין סשן פעיל. יש להתחבר מחדש.'};
+      tok=s.access_token;const c=decodeJwt(tok)||{};
+      const left=Math.round((s.expires_at*1000-Date.now())/60000);
+      const good=c.role==='authenticated';
+      return{ok:good,t:'role='+(c.role||'?')+' · aud='+(c.aud||'?')+' · משתמש='+String(c.sub||'').slice(0,8)+'… · תוקף נותר: '+left+' דקות'+(good?'':'\nהאסימון אינו של משתמש מחובר.')};
+    });
+    await step('פונקציית is_admin',async()=>{const {data,error}=await sb.rpc('is_admin');if(error)throw error;return{ok:data===true,t:data===true?'החשבון מוכר כמנהל':'החשבון אינו מנהל (הוסיפו אותו לטבלת admins)'}});
+    await step('קריאה מטבלת עסקים',async()=>{const {count,error}=await sb.from('businesses').select('*',{count:'exact',head:true});if(error)throw error;return{ok:true,t:'נקראו '+count+' רשומות'}});
+    await step('עמודת אזור וטבלת בקשות (מטמון סכמה)',async()=>{const a=await sb.from('businesses').select('area').limit(1);if(a.error)throw a.error;const q=await sb.from('business_requests').select('id',{count:'exact',head:true});if(q.error)throw q.error;return{ok:true,t:'העמודה area וטבלת business_requests נגישות ('+q.count+' בקשות)'}});
+    await step('כתיבה לבסיס הנתונים',async()=>{const {error}=await sb.from('site_settings').upsert({key:'_diag',value:{t:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'key'});if(error)throw error;return{ok:true,t:'נכתב ערך בדיקה פנימי "_diag" (לא מוצג באתר)'}});
+    await step('העלאת תמונה לאחסון',async()=>{
+      const png=Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=='),c=>c.charCodeAt(0));
+      const path='diag/'+Date.now()+'.png';
+      const up=await sb.storage.from('media').upload(path,new Blob([png],{type:'image/png'}),{contentType:'image/png',upsert:false});
+      if(up.error)throw up.error;
+      const rm=await sb.storage.from('media').remove([path]);
+      if(rm.error)throw rm.error;
+      return{ok:true,t:'העלאה ומחיקה של קובץ בדיקה הצליחו'};
+    });
+    out.append(h('div',{style:'margin-top:10px'},btn('העתקת הדוח','check','g',async()=>{try{await navigator.clipboard.writeText(rep.join('\n'));toast('הדוח הועתק')}catch(e){toast('אי אפשר להעתיק אוטומטית. סמנו את הטקסט ידנית.','err')}})));
+  }
+  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'בדיקת חיבור'),btn('הרצה מחדש','check','g',run)),h('p',{style:'margin-bottom:12px;font-size:14px'},'בדיקה של ההתחברות, ההרשאות, הכתיבה וההעלאה. הדוח אינו כולל אסימונים או סיסמאות.'),out);
+  await run();
+}
+const PAGES=[['dashboard','לוח בקרה','dash',pDashboard],['businesses','עסקים','store',pBusinesses],['bizreq','עסקים ממתינים לאישור','store',pBizReq,'biz'],['reviews','ביקורות','star',pReviews,'rev'],['inquiries','פניות תושבים','inbox',pInquiries,'inq'],['board','לוח מודעות','mega',pBoard],['promos','פרסומות','tag',pPromos],['content','תוכן וקטגוריות','layers',pContent],['assistant','עוזר חכם','bot',pAssistant],['design','עיצוב האתר','pal',pDesign],['history','היסטוריה ושחזור','hist',pHistory],['diag','בדיקת חיבור','check',pDiag]];
 async function refreshBadges(){
   if(!sb||!session)return;
   const c=(t,s)=>sb.from(t).select('*',{count:'exact',head:true}).eq('status',s).then(r=>r.count||0,()=>0);
-  const [i,r]=await Promise.all([c('inquiries','new'),c('reviews','pending')]);
+  const [i,r,bz]=await Promise.all([c('inquiries','new'),c('reviews','pending'),c('business_requests','pending')]);
   const set=(k,n)=>{const e=document.querySelector(`[data-badge="${k}"]`);if(e){e.textContent=n;e.style.display=n?'':'none'}};
-  set('inq',i);set('rev',r);document.title=(i?`(${i}) `:'')+'ניהול נהורה+';
+  set('inq',i);set('rev',r);set('biz',bz);const tot=i+r+bz;document.title=(tot?`(${tot}) `:'')+'ניהול נהורה+';
 }
 function route(){
   const [pg,sub]=(location.hash.replace(/^#\/?/,'')||'dashboard').split('/');
@@ -418,20 +548,21 @@ function route(){
   document.querySelectorAll('.nv').forEach(n=>n.classList.toggle('on',n.dataset.pg===P[0]));
   document.querySelector('.side').classList.remove('open');
   const main=document.getElementById('main');
-  Promise.resolve(P[3](main,sub)).catch(e=>main.replaceChildren(h('div',{class:'err'},'שגיאה: '+e.message)));
+  Promise.resolve(P[3](main,sub)).catch(e=>main.replaceChildren(h('div',{class:'err'},'שגיאה: '+errText(e))));
   main.scrollTop=0;window.scrollTo(0,0);
 }
 function renderShell(user){
   const side=h('nav',{class:'side','aria-label':'תפריט ניהול'},h('h1',{},'נהורה+ · ניהול'),...PAGES.map(p=>h('button',{class:'nv','data-pg':p[0],onclick:()=>{location.hash='#/'+p[0]}},ic(p[2]),p[1],p[4]&&h('span',{class:'bg','data-badge':p[4],style:'display:none'}))),h('div',{class:'sp'}),
     'Notification' in window&&Notification.permission==='default'&&h('button',{class:'nv',onclick:e=>{Notification.requestPermission().then(()=>e.target.closest('button').remove())}},ic('bell'),'הפעלת התראות דפדפן'),
     h('div',{style:'font-size:12px;opacity:.7;padding:4px 10px;word-break:break-all'},user.email),
-    h('button',{class:'nv',onclick:async()=>{await sb.auth.signOut();teardown();renderLogin()}},ic('out'),'התנתקות'));
+    h('button',{class:'nv',onclick:async()=>{manualOut=true;try{await sb.auth.signOut()}catch(e){}teardown();manualOut=false;renderLogin()}},ic('out'),'התנתקות'));
   app.replaceChildren(h('div',{class:'top'},h('button',{class:'btn g ib','aria-label':'תפריט',onclick:()=>side.classList.toggle('open')},ic('menu')),h('b',{},'ניהול נהורה+')),h('div',{class:'shell'},side,h('main',{class:'main',id:'main'})));
-  window.addEventListener('hashchange',route);route();refreshBadges();
-  const ch=sb.channel('rt-global-'+(++uid)).on('postgres_changes',{event:'INSERT',schema:'public',table:'inquiries'},p=>{const n=p.new||{};toast('התקבלה פנייה חדשה'+(n.full_name?' מאת '+n.full_name:''));if('Notification' in window&&Notification.permission==='granted')new Notification('פנייה חדשה בנהורה+',{body:n.full_name||''});refreshBadges()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'reviews'},()=>{toast('התקבלה ביקורת חדשה לאישור');refreshBadges()}).subscribe();
+  shellOn=true;window.addEventListener('hashchange',route);route();refreshBadges();
+  const ch=sb.channel('rt-global-'+(++uid)).on('postgres_changes',{event:'INSERT',schema:'public',table:'inquiries'},p=>{const n=p.new||{};toast('התקבלה פנייה חדשה'+(n.full_name?' מאת '+n.full_name:''));if('Notification' in window&&Notification.permission==='granted')new Notification('פנייה חדשה בנהורה+',{body:n.full_name||''});refreshBadges()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'reviews'},()=>{toast('התקבלה ביקורת חדשה לאישור');refreshBadges()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'business_requests'},p=>{const n=p.new||{};toast('בקשה חדשה להוספת עסק'+(n.name?': '+n.name:''));if('Notification' in window&&Notification.permission==='granted')new Notification('עסק חדש ממתין לאישור',{body:n.name||''});refreshBadges()}).subscribe();
   window.__globalCh=ch;
 }
-function teardown(){clearSubs();window.removeEventListener('hashchange',route);if(window.__globalCh){sb.removeChannel(window.__globalCh);window.__globalCh=null}session=null;document.title='ניהול נהורה+'}
+function sessionLost(msg){if(!shellOn)return;teardown();try{sb.auth.signOut({scope:'local'})}catch(e){}renderLogin(msg)}
+function teardown(){shellOn=false;clearSubs();window.removeEventListener('hashchange',route);if(window.__globalCh){sb.removeChannel(window.__globalCh);window.__globalCh=null}session=null;document.title='ניהול נהורה+'}
 
 /* ===== כניסה ===== */
 let fails=0,lockUntil=0;
@@ -457,14 +588,44 @@ async function verifyAdmin(s){
   if(data)return true;await sb.auth.signOut();return false;
 }
 function renderSetup(){app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'נדרשת הגדרת חיבור'),h('p',{},'יש להזין בראש הקובץ (CFG) את כתובת פרויקט Supabase ואת המפתח הציבורי (anon). לא מזינים מפתח service_role.'))))}
+function renderBootError(message){
+  app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'לא ניתן להפעיל את מערכת הניהול'),h('p',{},message),btn('טעינה מחדש',null,'',()=>location.reload()))));
+}
+async function loadSupabaseLibrary(){
+  const ready=()=>typeof window.supabase?.createClient==='function';
+  if(ready())return true;
+  for(const url of ['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2','https://unpkg.com/@supabase/supabase-js@2']){
+    const ok=await new Promise(resolve=>{
+      const script=document.createElement('script');
+      let done=false;
+      const finish=success=>{if(done)return;done=true;clearTimeout(timer);script.onload=null;script.onerror=null;if(!success)script.remove();resolve(success)};
+      const timer=setTimeout(()=>finish(false),12000);
+      script.onload=()=>finish(ready());script.onerror=()=>finish(false);
+      script.src=url;script.async=true;document.head.append(script);
+    });
+    if(ok||ready())return true;
+  }
+  return false;
+}
 async function boot(){
-  if(!CFG.url||!CFG.key||!window.supabase)return renderSetup();
-  sb=window.supabase.createClient(CFG.url,CFG.key);
+  if(!CFG.url||!CFG.key)return renderSetup();
+  if(!/^https:\/\/[^/]+\.supabase\.co\/?$/.test(CFG.url))return renderBootError('כתובת פרויקט Supabase אינה תקינה.');
+  if(typeof window.supabase?.createClient!=='function'){
+    app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'מתחבר למערכת...'),h('p',{},'טוען את ספריית Supabase.'))));
+    const loaded=await loadSupabaseLibrary();
+    if(!loaded)return renderBootError('פרטי החיבור קיימים, אך ספריית Supabase לא נטענה. בדקו את החיבור לאינטרנט או נסו בדפדפן אחר.');
+  }
+  const getS=async()=>{const {data}=await sb.auth.getSession();return data&&data.session};
+  sb=window.supabase.createClient(CFG.url,CFG.key,{global:{fetch:makeAuthFetch({key:CFG.key,getSession:getS,refresh:async()=>{const {data,error}=await sb.auth.refreshSession();if(error)throw error;if(data&&data.session)session=data.session;return data&&data.session},onAuthLost:()=>sessionLost('ההתחברות פגה. יש להתחבר מחדש.')})}});
+  sb.auth.onAuthStateChange((ev,ss)=>{
+    if(ss&&(ev==='TOKEN_REFRESHED'||ev==='SIGNED_IN'))session=ss;
+    if(ev==='SIGNED_OUT'&&shellOn&&!manualOut)setTimeout(()=>sessionLost('ההתחברות הסתיימה. יש להתחבר מחדש.'),0);
+  });
   const {data}=await sb.auth.getSession();
   if(data&&data.session){session=data.session;if(await verifyAdmin(session))return renderShell(session.user);session=null;return renderLogin('לחשבון זה אין הרשאת מנהל.')}
   renderLogin();
 }
-boot();
+boot().catch(e=>{console.error('[admin boot]',e);renderBootError(errText(e))});
 })();
 </script>
 </body>
