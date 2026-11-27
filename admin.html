@@ -2,631 +2,565 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>ניהול נהורה+</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>נהורה+ | כל המושבים במקום אחד</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap">
 <style>
-:root{--olive:#556B2F;--dark:#34452D;--cream:#F5F0E5;--line:#e3dccb;--mut:#6d7561;--soft:#e6ecd8;--bad:#a33a2c;--gold:#b09a55}
-*{box-sizing:border-box;margin:0}
-body{font-family:Heebo,Arial,sans-serif;background:var(--cream);color:#2b3324;font-size:15px}
+:root{--olive:#556B2F;--dark:#34452D;--cream:#F5F0E5;--card:#fff;--ink:#2b3324;--mut:#6d7561;--line:#e3dccb;--gold:#b09a55;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--cream:#F5F0E5}}
+*{box-sizing:border-box;margin:0}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:Heebo,Arial,sans-serif;background:var(--cream);color:var(--ink);padding-bottom:84px;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
-.shell{display:flex;min-height:100vh}
-.side{width:236px;flex:none;background:var(--dark);color:#f5f0e5;position:sticky;top:0;height:100vh;padding:16px 10px;display:flex;flex-direction:column;gap:3px;overflow:auto;z-index:30;transition:transform .25s}
-.side h1{font-size:20px;font-weight:800;padding:4px 10px 14px;letter-spacing:.3px}
-.nv{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;border:0;background:none;color:#e9e4d3;cursor:pointer;text-align:start;width:100%;transition:background .2s}
-.nv:hover{background:rgba(255,255,255,.09)}.nv.on{background:var(--cream);color:var(--dark);font-weight:700}
-.nv .bg{margin-inline-start:auto;background:var(--gold);color:#fff;border-radius:99px;font-size:11.5px;padding:1px 7px;min-width:20px;text-align:center}
-.side .sp{flex:1}
-.main{flex:1;min-width:0;padding:22px 26px 70px;max-width:1100px}
-.top{display:none}
-.ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.ph h2{font-size:22px;font-weight:800;color:var(--dark);margin-inline-end:auto}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 10px rgba(52,69,45,.07);padding:14px 16px}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));margin-bottom:16px}
-.stat b{display:block;font-size:28px;color:var(--dark);font-weight:800}.stat span{color:var(--mut);font-size:13.5px;display:flex;gap:6px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:8px 14px;background:var(--olive);color:#fff;font-weight:500;cursor:pointer;text-decoration:none;font-size:14px;transition:background .2s,transform .12s}
-.btn:hover{background:var(--dark)}.btn:active{transform:scale(.96)}.btn:disabled{opacity:.5;pointer-events:none}
-.btn.g{background:var(--soft);color:var(--dark)}.btn.g:hover{background:#d8e1c4}.btn.d{background:#f3dcd8;color:var(--bad)}.btn.d:hover{background:#ecc9c3}
-.ib{width:32px;height:32px;padding:0;justify-content:center}
-.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
-th,td{padding:10px 12px;text-align:start;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
-th{background:#faf7ee;color:var(--mut);font-weight:500;font-size:13px;white-space:nowrap}tr:last-child td{border-bottom:0}
-td.ac{white-space:nowrap;text-align:end}td.ac .btn{margin-inline-start:4px}
-.bdg{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12.5px;background:var(--soft);color:var(--dark)}.bdg.w{background:#f4ecd0;color:#7a6520}.bdg.b{background:#f3dcd8;color:var(--bad)}.bdg.m{background:#eee;color:#666}
-.fld{display:grid;gap:4px;margin-bottom:11px;font-size:13.5px;font-weight:500}
-.fld input,.fld select,.fld textarea,.inp{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fffdf8;outline:none;width:100%}
-.fld input:focus,.fld select:focus,.fld textarea:focus,.inp:focus{border-color:var(--olive);box-shadow:0 0 0 3px rgba(85,107,47,.15)}
-.fld.ck{display:flex;align-items:center;gap:8px}.fld.ck input{width:auto}
-.fld small{color:var(--mut);font-weight:400}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ov{position:fixed;inset:0;background:rgba(30,40,24,.5);display:grid;place-items:center;padding:16px;z-index:60;animation:fi .2s both}
-.md{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:18px;animation:up .25s both}
-.md h3{font-size:18px;color:var(--dark);margin-bottom:12px}.md .ft{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
-@keyframes fi{from{opacity:0}to{opacity:1}}@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.toasts{position:fixed;inset-inline-start:16px;bottom:16px;display:grid;gap:8px;z-index:90}
-.toast{background:var(--dark);color:#fff;border-radius:12px;padding:10px 14px;box-shadow:0 8px 22px rgba(0,0,0,.25);animation:up .25s both;max-width:340px}.toast.err{background:var(--bad)}
-.err{background:#f3dcd8;color:var(--bad);border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.empty{text-align:center;color:var(--mut);padding:26px}
-.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.pill{border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px;font-size:13px;cursor:pointer}.pill.on{background:var(--olive);color:#fff;border-color:var(--olive)}
-.login{max-width:380px;margin:12vh auto;padding:0 16px}.login .card{padding:22px}.login h1{color:var(--dark);margin-bottom:4px}.login p{color:var(--mut);margin-bottom:14px}
-.bars{display:flex;align-items:flex-end;gap:5px;height:110px;margin-top:8px}.bars div{flex:1;background:var(--olive);border-radius:4px 4px 0 0;min-height:2px;opacity:.85}
-.img{display:flex;gap:10px;align-items:center}.img img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.inq{margin-bottom:10px}.inq p{white-space:pre-wrap;margin:6px 0;line-height:1.6}
-pre{background:#faf7ee;border-radius:10px;padding:10px;font-size:12px;overflow:auto;direction:ltr;text-align:left;max-height:240px}
-.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.mini div{background:#fbf8ef;border:1px solid var(--line);border-radius:10px;padding:8px 2px;text-align:center;font-size:12px;color:var(--dark)}.mini div.hid{opacity:.35;text-decoration:line-through}
-@media(max-width:860px){.side{position:fixed;inset-block:0;inset-inline-start:0;transform:translateX(100%)}.side.open{transform:none}.top{display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--dark);color:#fff;padding:10px 14px;z-index:20}.main{padding:16px 14px 70px}.two{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.logo{display:block;width:min(430px,86%);margin:14px auto 6px;mix-blend-mode:multiply}
+.chat{background:var(--olive);border-radius:20px;padding:14px;box-shadow:0 10px 28px rgba(52,69,45,.22);max-width:640px;margin:0 auto}
+.msgs{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;margin-bottom:10px}
+.msgs:empty{display:none}
+.m{padding:9px 13px;border-radius:14px;font-size:15px;line-height:1.5;max-width:88%}
+.m.u{background:var(--cream);color:var(--dark);align-self:flex-start}
+.m.b{background:rgba(255,255,255,.14);color:#fff;align-self:flex-end}
+.row{display:flex;gap:8px}
+.row input{flex:1;min-width:0;border:0;border-radius:14px;padding:13px 15px;background:var(--cream);outline:none;font-size:16px}
+.send{width:48px;border:0;border-radius:14px;background:var(--dark);color:#fff;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .2s}
+.send:hover{background:#26331f;transform:translateY(-1px)}.send:disabled{opacity:.5}
+.dots span{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:#fff;animation:b 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{opacity:.3;transform:none}40%{opacity:1;transform:translateY(-4px)}}
+h2{font-size:20px;font-weight:700;color:var(--dark);margin:26px 0 12px;display:flex;align-items:center;gap:8px}
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 10px rgba(52,69,45,.08);padding:14px 16px;border:1px solid var(--line)}
+.list{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.ic{width:38px;height:38px;border-radius:11px;background:#e6ecd8;color:var(--olive);display:grid;place-items:center;flex:none}
+.it{display:flex;gap:12px;align-items:center}.it b{font-size:15.5px}.it small{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:11px;padding:9px 14px;background:var(--olive);color:#fff;font-weight:500;font-size:14px;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s}
+.btn:hover{background:var(--dark);transform:translateY(-1px)}.btn.off{background:#cfd4c3;color:#6d7561;pointer-events:none}.btn.ghost{background:#e6ecd8;color:var(--dark)}
+.empty{text-align:center;color:var(--mut);padding:18px;font-size:14.5px;line-height:1.6}
+.fld{display:grid;gap:5px;margin-bottom:11px;font-size:14px;font-weight:500}
+.fld input,.fld select,.fld textarea{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fffdf8;outline:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--olive)}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 13px;font-size:13.5px;cursor:pointer}.chip.on{background:var(--olive);color:#fff;border-color:var(--olive)}
+.pg{animation:in .45s ease both}@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ok{background:#e6ecd8;color:var(--dark);border-radius:12px;padding:12px 14px;font-weight:500}
+nav{position:fixed;inset:auto 0 0 0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;gap:2px;overflow-x:auto;justify-content:safe center;z-index:5}
+nav button{flex:none;min-width:68px;border:0;background:none;border-radius:11px;padding:6px 8px;display:grid;justify-items:center;gap:2px;font-size:11.5px;color:var(--mut);cursor:pointer;transition:.2s}
+nav button.on{color:var(--olive);background:#e6ecd8;font-weight:700}
+.hd{text-align:center;color:var(--mut);font-size:14px;margin:4px 0 14px}
+.bd{margin-top:16px;max-width:640px;margin-inline:auto}.bdh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700;color:var(--dark);font-size:16px}.bdh span{display:flex;gap:7px;align-items:center}
+.ib{border:1px solid var(--line);background:#fff;border-radius:9px;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;color:var(--olive)}.ib:hover{background:#e6ecd8}
+.bx{height:150px;overflow-y:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);display:grid;gap:8px;align-content:start}.bx::-webkit-scrollbar{display:none}
+.ad{display:flex;gap:11px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;text-align:start;width:100%;box-shadow:0 1px 6px rgba(52,69,45,.06);transition:box-shadow .2s,transform .2s}.ad:hover{box-shadow:0 4px 14px rgba(52,69,45,.14);transform:translateY(-1px)}
+.ad img{width:46px;height:46px;border-radius:9px;object-fit:cover;flex:none}.ad b{font-size:14.5px;display:block}.ad p{font-size:13px;color:var(--mut);margin-top:1px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}.ad small{font-size:11.5px;color:var(--gold)}
+.addbiz{display:flex;align-items:center;gap:12px;width:100%;border:0;border-radius:14px;padding:13px 15px;background:linear-gradient(135deg,var(--olive),var(--dark));color:#fff;font:inherit;text-align:start;cursor:pointer;box-shadow:0 4px 14px rgba(85,107,47,.28);transition:transform .15s,box-shadow .15s}.addbiz:hover{transform:translateY(-1px)}.addbiz:active{transform:scale(.98)}.addbiz b{display:block;font-size:15.5px}.addbiz small{opacity:.85;font-size:12.5px}.addbiz .pl{background:rgba(255,255,255,.18);border-radius:10px;padding:8px;display:grid;place-items:center}.err{background:#f7e3df;color:#8a2a1c;border-radius:10px;padding:9px 12px;font-size:13.5px;margin-bottom:10px}.hrs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ov{position:fixed;inset:0;background:rgba(30,40,24,.5);display:grid;place-items:center;padding:18px;z-index:20;animation:in .25s both}.md{background:#fff;border-radius:16px;max-width:460px;width:100%;max-height:82vh;overflow:auto;padding:18px;position:relative}.md img{width:100%;border-radius:10px;margin:8px 0}
+.pr{display:grid;max-width:640px;margin:14px auto 0}.ps{grid-area:1/1;opacity:0;transition:opacity .8s ease;pointer-events:none;background:linear-gradient(135deg,#fff,#eef1e2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;cursor:pointer;position:relative;text-align:start}.ps.on{opacity:1;pointer-events:auto}
+.ps img{width:56px;height:56px;border-radius:10px;object-fit:cover}.ps b{font-size:15px;display:block}.ps p{font-size:13px;color:var(--mut)}.tag{font-size:10.5px;color:var(--mut);letter-spacing:.3px;display:block;margin-bottom:2px}
+.pop{position:fixed;inset-inline-start:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:min(300px,calc(100% - 24px));background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(52,69,45,.25);padding:12px 14px;z-index:15;animation:in .5s both;cursor:pointer}.pop .ib{position:absolute;top:6px;inset-inline-end:6px;width:28px;height:28px}
+.qn{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:640px;margin:14px auto 0}
+.qb{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;background:#fbf8ef;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 8px rgba(52,69,45,.08);color:var(--dark);font-size:13px;font-weight:500;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,background .2s ease}
+.qb svg{color:var(--olive)}.qb:hover{background:#fff;transform:translateY(-2px);box-shadow:0 5px 14px rgba(52,69,45,.15)}.qb:active{transform:scale(.95);box-shadow:0 1px 4px rgba(52,69,45,.12)}
+.qb{min-width:0;text-align:center;line-height:1.2}
+@media(prefers-reduced-motion:reduce){.pg,.pop,.ov{animation:none}.ps{transition:none}.qb{transition:none}}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="root"><p id="boot" style="text-align:center;padding:48px 20px;font-family:Heebo,Arial,sans-serif;color:#556B2F">טוען את נהורה+…</p></div>
+<script>window.addEventListener("load",function(){setTimeout(function(){var b=document.getElementById("boot");if(b)b.textContent="לא ניתן לטעון את האתר. בדקו את החיבור לאינטרנט ורעננו את הדף."},6000)})</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-(function(){'use strict';
-/* ===== הגדרות חיבור: למלא את כתובת הפרויקט ואת המפתח הציבורי (anon) בלבד. לעולם לא service_role ===== */
-const CFG=Object.assign({url:'https://zbbwphvgsmfncsqdgnvq.supabase.co',key:'sb_publishable_Kc8uovy3o4YGuT9setkJEQ_8YAVG9Gh',publicUrl:''},window.NEHORA_CONFIG||{});
-const app=document.getElementById('app');
-let sb=null,session=null,subs=[],uid=0,badgeTimer=null,shellOn=false,manualOut=false;
-/*==AUTHKIT==*/
-function decodeJwt(t){try{const p=String(t).split('.')[1];return JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){return null}}
-function errInfo(e){
-  const i={msg:'',status:null,code:null};
-  if(e==null)return i;
-  if(typeof e==='string'){i.msg=e;return i}
-  i.msg=String(e.message||e.error_description||e.msg||(typeof e.error==='string'?e.error:'')||'');
-  const st=e.statusCode!=null&&!isNaN(Number(e.statusCode))?e.statusCode:(e.status!=null?e.status:null);
-  i.status=st!=null&&!isNaN(Number(st))?Number(st):null;
-  i.code=e.code!=null?String(e.code):(e.error_code!=null?String(e.error_code):null);
-  if(e.details&&typeof e.details==='string'&&!i.msg)i.msg=e.details;
-  return i;
+const { useState, useEffect, useRef } = React;
+const LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAFNA+gDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD70oopa5zYSiiigBaKKKBB2oozR+FACUtHaigYCikpaACiigdKBBSdqXvSUAFHeiigYUUUtACUtHaigQlFLR2oGGKKKKBBRRRQAnelxR+NFAwoo60d6AEope9FAhKKWigYlFL1ooEFJS96KBhSUtFAhKWiigYUUUUCEpaKSgBaKKO1ABSUvaigBKWiigA7UUd6M0DCiiigApKWigVw/CiiigYUUUUCCiijFACUtH1oNABRRRQAUUUYoAKKPrRQAcUUUdaBhSUUtAhKKWigYlFLSUAL3pKXNHWgAo/CikoELRRR+FAw5ooo7UCD8KPwo7UUAFJRRQMWikooAKWijigQlL2oooAKSlo6CgYlFKKKACkoooAKU0lHegBaKKKBCUUUUAFFFLQMKKKPxoAKSlooASilooASl70UUAJRRRQAUUUUAFFFFABRnPejiigAooooAWijPFFAgo/CkooGKRzSUtFACUUtHagApKKKACiiigBaKSloAKKPeigAoopKBBS9qSigYUUUUALRRRnFAg5pKWigBKX60UUDCjvRRxQIOKKKKACkpaKADqaKSloGFJil70lABS/Sik/CgQtH0pKKAF/Gj8aKSgBaKKKADtRRSUALSUUtAwo4pKWgQUUUd6ACijvR2oAKKKDQAUUUfhQAUUlLQAUd6OaO9ABRRRQAUUUUAJS0lFABS0lFAxaKSigBe9FHejvQIKSl70d6ACkopaBhSUpPtSUCF7UUdqSgBaKSloASiiigYfSlpKKAFopKXFABR2oo7UCEpaKO1Awo70UUCDvig0lLQMSl70dqSgBaPeikoEFLSUUDCiiloASil4o60AJRRR3oAKWijNAhKUUlHFAxe9FJRQAUUUUAFFH0ooAPwooo7UAFFFLQAlL2ooNAgpKWigYlLSUtAgo5oooASiil7UDCjmjvSUCCilHFFABRRRQAlLR2ooGFFFFAgoxRR+FACUv40ZpKAFopKKAFpKXvRQMSlopKAFoopKBC0UUUAFFHvRQAlFFHNAxaKKKBB2oxRRQAUYoooAKKM8UdqADig9aKKADikpaKACiiigAooooAKKKM4NABRRSUALR9KKM0AJS0fWigApKWigAo+tBooAO9FFHSgAoopKAF+tFFFAwo+tJS9qBBRz60UdaACjvRRxQAUc0UUAHWiiigApKWg0DCikFLQAUUUd6BBSUp+lJ3oAWj2oooAKKKKBhR2opKBC9aSl57UUAJRRS0DEpaKSgBaO1FFAB+FJR1ooAM8UZoooELRSUuKBiUvekpaACjFFFAhKKX6UUDE70UUUAFFFFABQaKKACiijvQAtJRRQAUvekooAX9aKSloASlopKAFpKWkoAWkopaACkopaBB2o7Ud6KBiUv40UlABRS0UAJS0lLQAlLQaSgApaSigAoope9ABRRRQIKSlpKBhRR3pe9ABSUtFAB2o70fWigQUfWkpaACjij8aKAFpKKM0AGaKKKADvR7UUUAFFFHrQAUUZooASloooAKKKKACijtR2oAKKKKADvRRSUALRRxR2oGFFJS0AFFFFAgooo70AHWijtR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AKKKKACiiigAo7UfWigAooo70AFFFFABRRRQAUUYo+tABRR2ooAKKM0UALSUcUdelABRR25FFABRRRQAUdaO1FABRRR7UAFFHHrRQAUUUUAFFFFABRRRQAUUUUAFLmiigQmaKKDQMKKD1o6mgA7UUUUAFFFFABRiiigAopaO1ACUUUUAFFFFABRRS/lQAUlFFAC0lLSUAFFA5ooAKKKKACiiigAoozRQAUUUUAFFFAoAKKKPxoAKKKKACiijNABRRRQAUUUUABooooAKKKKACig0UAFFB9RRQAtFJRQAvekoooAKKDRQAYooooAO1FGaOnWgAooooAKKO1HegAoo70UAGRmiiigAoo/GigA70UUY45oAKKKBQAUUdaKAD8KKKKACiiigA4FHaiigAo70ZooAKO/NH0ooAB9aKKO9ABRRRigAooooAKKWkoAKKKXBoASjvRRzQAZ5o6UUUAFLSUUAFFHeigBaSiigAooooAKKKOtABR7UUUAFFFFABRRRQAdqPxoooAKKKKACl7UlFAg70UUtACUfjS9qSgYdTR3o7UvagBKM+1FL3oASlpO9HagAFFFLzQAdqBSUvagApKXvSUAFHaijvmgAoo70UAFFFFABRS0lABRRiigAo4xRRQAUd/6UtJjmgAo7UUUAAooooAO+aKKKACjFFFABRRRQAUUUUAFFFFAB+NFFFAB+NFFFAB9KPrR2ooAOtH0oooAKMcUtJQAUUUUAFHaiigAooooAKKKKADHaiiigAo6UUcUAHejvRRQAUUUUAHajqKKKADvRkUd6KACgUUUAFFHFFAB2ooooAO1AoooAKKKKACiij6UAFFFFABRRRQAUUUUAFFFFABS0lLQAlL2pKKACilpKACiiigAooooAKKX2pO9AC9qSiigBaKKSgA/GiiigBRSUUUCD6Ud6KO9AwooooAKWkpaAD8KTvS0negQtJRRQMKKWkoAWjFFHFAgoo+lHagAooooAPwoopKAF/CikpaBiUduKWkoAOaKKWgBKKKO9ABRRRQAUtFJQAveikpe1AhKWijvQMSlxRRQIKKKKACkpaO9AxKKKWgBMUfhRRQAfWijvQetABRRRQAdqKKKACiiigAoopaAEooooAKKKKACiiigAooooAWkoooAKKKKACiiigAooooAKKKKACijvRQAUUdelFABRRRQAUUUUAFFFGaACiiigAoxRQPWgAooooAKKKKADvS0neigA/GiiigAooooAKKKKAD8aKKKACiiigA/GjtR0NFABS0lFAC0lFFABR2pM5NL60AFFFFABiiiigAooooAKKKXtQAZpKKKACloo70AJ3oo7UvagBKKKKACiiigApaSigAoopaBCUtJ3pepoGJ0opT1pKADpS0lLQAUUlFAhaKKTvQAtJS0UAJRS9aTNAxaSlzSUALSdqAaKACil7UnQ0AHaiiigAo/CiigBaKKKBB3pKWkoGLSUtHagBKKKKAF5pKKKAFNJRRQAUUUE0AFFHWigAoozRQAUUvbNJQAd6KKKACig0UAFFFFABRRRQAUUUUAFFFFAC0lL70lABRRRQAUUUUAFFFFAC0lFFABRzRRQAYoo70cUAFFFFABRRQeKACiiigAooooAO9FFFABRRRQAUUdqKACiijNABRRRQB//2Q==";
+const BUSINESSES = [];
+const BIZ_CATS = ["הכל", "בעלי מקצוע", "מזון", "שירותי רכב", "בריאות ויופי", "חינוך", "אחר"];
+const NEWS = [];
+const ADS = [];
+const PROMOS = [];
+const DEMO_ADS = [1, 2, 3, 4].map((n) => ({ id: "d" + n, title: "מודעה לדוגמה " + n, text: "טקסט קצר שמציג את מראה המודעה בלוח. אינו מידע אמיתי.", full: "זהו תוכן מלא לדוגמה, להמחשת העיצוב בלבד. מודעות אמיתיות יוזנו דרך מערכת הניהול.", date: "2026-11-2" + n, order: n }));
+const DEMO_PROMOS = [{ id: "p1", title: "מקום לפרסומת שלכם (דוגמה)", text: "פרסומת לדוגמה להמחשת העיצוב", target: { type: "biz" } }, { id: "p2", title: "פרסומת נוספת (דוגמה)", text: "מתחלפת אוטומטית כל 6 שניות", target: { type: "biz" } }, { id: "p3", title: "פרסומת קופצת (דוגמה)", text: "מופיעה פעם אחת בכל ביקור", popup: true, target: { type: "biz" } }];
+const demo = () => location.hash === "#demo";
+const today = () => (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+const live = (a, s, e) => a.active !== false && (!a[s] || a[s] <= today()) && (!a[e] || a[e] >= today());
+const activeAds = () => (demo() ? DEMO_ADS : ADS).filter((a) => live(a, "publishAt", "removeAt")).sort((a, b) => {
+  var _a, _b;
+  return ((_a = a.order) != null ? _a : 99) - ((_b = b.order) != null ? _b : 99) || (b.date || "").localeCompare(a.date || "");
+});
+const activePromos = () => (demo() ? DEMO_PROMOS : PROMOS).filter((a) => live(a, "startAt", "endAt"));
+const fdate = (d) => d ? new Date(d).toLocaleDateString("he-IL") : "";
+function openPromo(p, go) {
+  const t = p.target || {};
+  window.__trackPromo && window.__trackPromo(p.id, "click");
+  if (t.type === "biz") go("biz");
+  else if (t.type === "whatsapp" && t.value) window.open(waHref({ wa: t.value }), "_blank", "noopener");
+  else if (t.type === "url" && t.value && /^https:\/\//.test(t.value)) window.open(t.value, "_blank", "noopener");
 }
-function friendly(e){if(e&&e.friendly)return e;const x=new Error(errText(e));x.friendly=true;return x}
-function errText(e){
-  if(e&&e.friendly)return e.message;
-  const {msg,status,code}=errInfo(e),m=msg.toLowerCase();
-  let t;
-  if(status===401||code==='PGRST301'||code==='PGRST303'||/jwt|not authenticated|invalid token|token.*expired/.test(m))t='ההתחברות פגה או לא תקינה. יש להתנתק ולהתחבר מחדש.';
-  else if(/^PGRST20[245]$/.test(code||'')||/schema cache/.test(m))t='Supabase עדיין לא רענן את מבנה הטבלאות והפונקציות. ב-SQL Editor יש להריץ: notify pgrst, \'reload schema\'; ואז לנסות שוב.';
-  else if(code==='42501'||status===403||/row-level security|violates row|permission denied|not allowed|unauthorized/.test(m))t='אין הרשאה לבצע את הפעולה. בדקו שהחשבון רשום כמנהל (טבלת admins).';
-  else if(/bucket not found/.test(m))t='דלי האחסון "media" לא קיים בפרויקט. יש להריץ מחדש את חלק האחסון בקובץ schema.sql.';
-  else if(/maximum allowed size|payload too large/.test(m)||status===413)t='הקובץ גדול מדי (מעל 5MB).';
-  else if(/mime type|not supported|invalid.*type/.test(m)&&/storage|mime|image/.test(m))t='סוג הקובץ אינו מותר. אפשר JPG, PNG, WEBP או GIF.';
-  else if(/failed to fetch|networkerror|load failed|network request failed/.test(m))t='אין חיבור לשרת. בדקו את האינטרנט ונסו שוב.';
-  else if(code==='23505')t='כבר קיים פריט עם אותם נתונים.';
-  else if(code==='23502')t='חסר שדה חובה.';
-  else if(code==='23503')t='הפריט מקושר לנתונים אחרים ולכן לא ניתן לבצע את הפעולה.';
-  else if(code==='23514'||code==='22P02'||code==='22001'||code==='22007'||code==='22008')t='אחד הערכים אינו תקין או ארוך מדי. בדקו את השדות.';
-  else if(code==='PGRST116')t='הפריט לא נמצא.';
-  else if(msg)t=msg;
-  else t='הפעולה נכשלה ללא הסבר מהשרת';
-  const tech=[status!=null?status:null,code].filter(x=>x!=null&&x!=='').join('/');
-  return tech?t+' ('+tech+')':t;
-}
-function makeAuthFetch(o){
-  const base=o.base||globalThis.fetch.bind(globalThis);
-  const guarded=u=>/\/(rest|storage)\/v1\//.test(u);
-  let lost=false;
-  return async function(input,init){
-    if(typeof input!=='string'||!guarded(input))return base(input,init);
-    const send=async tok=>{
-      const hd=new Headers((init&&init.headers)||{});
-      hd.set('apikey',o.key);
-      if(tok)hd.set('Authorization','Bearer '+tok);
-      return base(input,Object.assign({},init,{headers:hd}));
+function Board() {
+  const items = activeAds(), [open, setOpen] = useState(null), [paused, setP] = useState(false), box = useRef(), hold = useRef(false), tm = useRef();
+  useEffect(() => {
+    const el = box.current;
+    if (!el || !items.length) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf, acc = 0;
+    const step = () => {
+      const half = el.scrollHeight / 2;
+      if (!paused && !hold.current && !reduce && half > el.clientHeight) {
+        acc += window.__boardSpeed || 0.35;
+        if (acc >= 1) {
+          const d = Math.floor(acc);
+          acc -= d;
+          el.scrollTop += d;
+        }
+        if (el.scrollTop >= half) el.scrollTop -= half;
+      }
+      raf = requestAnimationFrame(step);
     };
-    let s=null;try{s=await o.getSession()}catch(e){}
-    if(s&&s.expires_at&&s.expires_at*1000-Date.now()<60000){try{s=(await o.refresh())||s}catch(e){}}
-    if(!s||!s.access_token)return base(input,init);
-    let r=await send(s.access_token);
-    if(r.status===401){
-      let n=null;try{n=await o.refresh()}catch(e){}
-      if(n&&n.access_token)r=await send(n.access_token);
-      if(r.status===401&&!lost){lost=true;try{o.onAuthLost&&o.onAuthLost()}catch(e){}setTimeout(()=>{lost=false},5000)}
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [paused, items.length]);
+  useEffect(() => {
+    const k = (e) => e.key === "Escape" && setOpen(null);
+    addEventListener("keydown", k);
+    return () => removeEventListener("keydown", k);
+  }, []);
+  if (!items.length) return null;
+  const touch = () => {
+    hold.current = true;
+    clearTimeout(tm.current);
+    tm.current = setTimeout(() => hold.current = false, 3500);
+  };
+  const row = (a, k) => /* @__PURE__ */ React.createElement("button", { key: k, className: "ad", onClick: () => setOpen(a), "aria-hidden": k.startsWith("c") || void 0, tabIndex: k.startsWith("c") ? -1 : 0 }, a.img && /* @__PURE__ */ React.createElement("img", { src: a.img, alt: "" }), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("b", null, a.title), /* @__PURE__ */ React.createElement("p", null, a.text), /* @__PURE__ */ React.createElement("small", null, fdate(a.date))));
+  return /* @__PURE__ */ React.createElement("section", { className: "bd pg", "aria-label": "לוח מודעות" }, /* @__PURE__ */ React.createElement("div", { className: "bdh" }, /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement(I, { n: "Pin", s: 18 }), window.__t && window.__t.board_heading || "לוח מודעות"), /* @__PURE__ */ React.createElement("button", { className: "ib", onClick: () => setP(!paused), "aria-label": paused ? "המשך" : "עצירה" }, /* @__PURE__ */ React.createElement(I, { n: paused ? "Play" : "Pause", s: 15 }))), /* @__PURE__ */ React.createElement("div", { className: "bx", ref: box, onMouseEnter: () => hold.current = true, onMouseLeave: () => hold.current = false, onTouchStart: touch, onWheel: touch, onPointerDown: touch }, items.map((a) => row(a, "a" + a.id)), items.map((a) => row(a, "c" + a.id))), open && /* @__PURE__ */ React.createElement("div", { className: "ov", onClick: () => setOpen(null) }, /* @__PURE__ */ React.createElement("div", { className: "md", role: "dialog", onClick: (e) => e.stopPropagation() }, /* @__PURE__ */ React.createElement("button", { className: "ib", style: { position: "absolute", top: 10, insetInlineEnd: 10 }, onClick: () => setOpen(null), "aria-label": "סגירה" }, /* @__PURE__ */ React.createElement(I, { n: "X", s: 16 })), /* @__PURE__ */ React.createElement("h2", { style: { margin: "0 0 4px", paddingInlineEnd: 36 } }, open.title), /* @__PURE__ */ React.createElement("small", { style: { color: "var(--gold)" } }, fdate(open.date)), open.img && /* @__PURE__ */ React.createElement("img", { src: open.img, alt: "" }), /* @__PURE__ */ React.createElement("p", { style: { lineHeight: 1.7, marginTop: 8, fontSize: 15 } }, open.full || open.text))));
+}
+function Promos({ go }) {
+  const L = activePromos().filter((p) => !p.popup), [i, setI] = useState(0);
+  useEffect(() => {
+    if (L.length < 2) return;
+    const t = setInterval(() => setI((x) => (x + 1) % L.length), 6e3);
+    return () => clearInterval(t);
+  }, [L.length]);
+  useEffect(() => {
+    const c = L[i % (L.length || 1)];
+    c && window.__trackPromo && window.__trackPromo(c.id, "view");
+  }, [i, L.length]);
+  if (!L.length) return null;
+  return /* @__PURE__ */ React.createElement("section", { className: "pr", "aria-label": "פרסומות" }, L.map((p, k) => /* @__PURE__ */ React.createElement("div", { key: p.id, className: "ps" + (k === i % L.length ? " on" : ""), role: "link", tabIndex: 0, onClick: () => openPromo(p, go), onKeyDown: (e) => e.key === "Enter" && openPromo(p, go) }, p.img && /* @__PURE__ */ React.createElement("img", { src: p.img, alt: "" }), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("span", { className: "tag" }, "פרסום"), /* @__PURE__ */ React.createElement("b", null, p.title), /* @__PURE__ */ React.createElement("p", null, p.text)))));
+}
+function Popup({ go, v }) {
+  const [p, setP] = useState(null);
+  useEffect(() => {
+    const L = activePromos().filter((x2) => x2.popup);
+    if (!L.length) return;
+    const x = L.find((q) => !popSeen(q));
+    if (!x) return;
+    const t = setTimeout(() => setP(x), 1e4);
+    return () => clearTimeout(t);
+  }, [v]);
+  useEffect(() => {
+    p && window.__trackPromo && window.__trackPromo(p.id, "view");
+  }, [p && p.id]);
+  if (!p) return null;
+  const close = (e) => {
+    e && e.stopPropagation();
+    popMark(p);
+    setP(null);
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "pop", role: "complementary", onClick: () => {
+    openPromo(p, go);
+    close();
+  } }, /* @__PURE__ */ React.createElement("button", { className: "ib", onClick: close, "aria-label": "סגירת פרסומת" }, /* @__PURE__ */ React.createElement(I, { n: "X", s: 14 })), /* @__PURE__ */ React.createElement("span", { className: "tag" }, "פרסום"), /* @__PURE__ */ React.createElement("b", { style: { display: "block", paddingInlineEnd: 30 } }, p.title), /* @__PURE__ */ React.createElement("p", { style: { fontSize: 13, color: "var(--mut)" } }, p.text));
+}
+const EVENTS = [];
+const SERVICES = [["Mail", "דואר"], ["ShoppingBasket", "מכולת"], ["Fuel", "תחנת דלק 24/7 (בכפוף לאימות)"], ["Building2", "מזכירות המושב"], ["Stethoscope", "מרפאה"], ["Armchair", "מועדון בית לקשיש"], ["Bus", "תחבורה ציבורית"], ["Trash2", "מועדי פינוי גזם"]].map(([i, n]) => ({ i, n, hours: null, phone: null }));
+const PHONES = ["כיתת כוננות", 'צוות צח"י', 'צוות סח"י וחלוקת מזון', "שיטור קהילתי", "מוקדי חירום"].map((n) => ({ n, phone: null }));
+const P = { Stethoscope: "M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3M22 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0z", Armchair: "M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0zM5 18v2M19 18v2", Plus: "M5 12h14M12 5v14", Flame: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4", BookOpen: "M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z", Image: "M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 15l-3.1-3.1a2 2 0 0 0-2.8 0L6 21", Pause: "M14 4h4v16h-4zM6 4h4v16H6z", Play: "M6 3l14 9-14 9z", X: "M18 6 6 18M6 6l12 12", Home: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8M3 10a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z", Store: "m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.4a2 2 0 0 1 1.4.6L22 7M4 10v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10M2 7a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0", Pin: "M12 17v5M9 10.8a2 2 0 0 1-1.1 1.8l-1.8.9A2 2 0 0 0 5 15.2V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.8a2 2 0 0 0-1.1-1.8l-1.8-.9A2 2 0 0 1 15 10.8V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z", Megaphone: "m3 11 18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6", Calendar: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z", Users: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8", Phone: "M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z", Mail: "M22 7l-8.97 5.7a2 2 0 0 1-2.06 0L2 7M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z", Send: "m22 2-7 20-4-9-9-4zM22 2 11 13", Star: "M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z", Search: "m21 21-4.3-4.3M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z", Chat: "M7.9 20A9 9 0 1 0 4 16.1L2 22z", Clock: "M12 6v6l4 2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", Mail2: "M22 7l-8.97 5.7a2 2 0 0 1-2.06 0L2 7M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z", ShoppingBasket: "m15 11-1 9M19 11l-4-7M2 11h20M3.5 11l1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4M4.5 15.5h15M5 11l4-7M9 11l1 9", Fuel: "M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16M2 21h13M3 9h11", Building2: "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18zM6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4", Bus: "M8 6v6M16 6v6M2 12h19.6M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3M9 18h5M7 18a2 2 0 1 0 0 .01M16 18a2 2 0 1 0 0 .01", Trash2: "M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6", Shield: "M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" };
+const I = ({ n, s = 20, fill }) => /* @__PURE__ */ React.createElement("svg", { width: s, height: s, viewBox: "0 0 24 24", fill: fill ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("path", { d: P[n] || P.Pin }));
+const Ic = ({ n }) => /* @__PURE__ */ React.createElement("span", { className: "ic" }, /* @__PURE__ */ React.createElement(I, { n }));
+const Call = ({ phone }) => phone ? /* @__PURE__ */ React.createElement("a", { className: "btn", href: "tel:" + phone }, /* @__PURE__ */ React.createElement(I, { n: "Phone", s: 16 }), "חייג") : /* @__PURE__ */ React.createElement("span", { className: "btn off", title: "מספר יתווסף לאחר אימות" }, /* @__PURE__ */ React.createElement(I, { n: "Phone", s: 16 }), "חייג");
+const Empty = ({ t }) => /* @__PURE__ */ React.createElement("div", { className: "card empty" }, t);
+const Stars = ({ v = 0, on }) => /* @__PURE__ */ React.createElement("span", { style: { display: "inline-flex", gap: 2, color: "#b09a55" } }, [1, 2, 3, 4, 5].map((k) => /* @__PURE__ */ React.createElement("span", { key: k, onClick: on && (() => on(k)), style: { cursor: on ? "pointer" : "default" } }, /* @__PURE__ */ React.createElement(I, { n: "Star", s: on ? 24 : 15, fill: k <= v }))));
+function isOpen(h) {
+  if (!h) return null;
+  const d = /* @__PURE__ */ new Date(), m = d.getHours() * 60 + d.getMinutes(), f = (x) => x.split(":").reduce((a, b) => a * 60 + +b);
+  return m >= f(h.open) && m < f(h.close);
+}
+function Chat() {
+  var _a;
+  const [v, setV] = useState(""), [ms, setMs] = useState([]), [busy, setB] = useState(false), end = useRef();
+  useEffect(() => {
+    end.current && (end.current.scrollTop = 1e5);
+  }, [ms, busy]);
+  const typeOut = (t) => {
+    let i = 0;
+    setMs((a) => [...a, { r: "b", t: "" }]);
+    const id = setInterval(() => {
+      i++;
+      setMs((a) => {
+        const c = [...a];
+        c[c.length - 1] = { r: "b", t: t.slice(0, i) };
+        return c;
+      });
+      if (i >= t.length) {
+        clearInterval(id);
+        setB(false);
+      }
+    }, 22);
+  };
+  const go = (e) => {
+    e.preventDefault();
+    const q = v.trim();
+    if (!q || busy) return;
+    setMs((a) => [...a, { r: "u", t: q }]);
+    setV("");
+    setB(true);
+    window.__trackSearch && window.__trackSearch(q);
+    setTimeout(() => typeOut(answerFor(q)), 1300);
+  };
+  return /* @__PURE__ */ React.createElement("form", { className: "chat", onSubmit: go }, /* @__PURE__ */ React.createElement("div", { className: "msgs", ref: end }, ms.map((m, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "m " + m.r }, m.t)), busy && ((_a = ms[ms.length - 1]) == null ? void 0 : _a.r) === "u" && /* @__PURE__ */ React.createElement("div", { className: "m b dots" }, /* @__PURE__ */ React.createElement("span", null), /* @__PURE__ */ React.createElement("span", null), /* @__PURE__ */ React.createElement("span", null))), /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("input", { value: v, onChange: (e) => setV(e.target.value), placeholder: "שאלו אותי כל שאלה", "aria-label": "שאלו אותי כל שאלה" }), /* @__PURE__ */ React.createElement("button", { className: "send", disabled: busy, "aria-label": "שליחה" }, /* @__PURE__ */ React.createElement(I, { n: "Send", s: 20 }))));
+}
+const CHABAD = { events: [], news: [], kids: [], photos: [], contact: { name: null, phone: null } };
+const RELIGION = { prayers: { "שחרית": null, "מנחה": null, "ערבית": null }, shabbat: [], holidays: [], classes: [], updates: [] };
+const Sec = ({ icon, title, children }) => /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("h2", { style: { fontSize: 17, margin: "20px 0 10px" } }, /* @__PURE__ */ React.createElement(I, { n: icon, s: 18 }), title), children);
+const Items = ({ items, icon, empty }) => items.length ? /* @__PURE__ */ React.createElement("div", { className: "list" }, items.map((x, i) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: i }, /* @__PURE__ */ React.createElement(Ic, { n: icon }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, x.title), /* @__PURE__ */ React.createElement("small", null, [x.sub || x.time, fdate(x.date)].filter(Boolean).join(" · ")), x.text && /* @__PURE__ */ React.createElement("small", null, x.text))))) : /* @__PURE__ */ React.createElement(Empty, { t: empty });
+function Chabad() {
+  const C = CHABAD;
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Flame" }), "אירועי חב״ד נהורה"), /* @__PURE__ */ React.createElement(Sec, { icon: "Calendar", title: "אירועים ופעילויות" }, /* @__PURE__ */ React.createElement(Items, { items: C.events, icon: "Calendar", empty: "אירועי חב״ד יופיעו כאן." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Megaphone", title: "הודעות ופרסומים" }, /* @__PURE__ */ React.createElement(Items, { items: C.news, icon: "Megaphone", empty: "אין הודעות כרגע." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Users", title: "פעילויות לילדים ולמשפחות" }, /* @__PURE__ */ React.createElement(Items, { items: C.kids, icon: "Users", empty: "פעילויות לילדים ולמשפחות יופיעו כאן." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Image", title: "תמונות מאירועים" }, C.photos.length ? /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(130px,1fr))", gap: 8 } }, C.photos.map((p, i) => /* @__PURE__ */ React.createElement("img", { key: i, src: p.src, alt: p.caption || "", style: { width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: 12 } }))) : /* @__PURE__ */ React.createElement(Empty, { t: "תמונות מאירועים יופיעו כאן." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Phone", title: "פרטי התקשרות" }, /* @__PURE__ */ React.createElement("div", { className: "card it", style: { justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("div", { className: "it" }, /* @__PURE__ */ React.createElement(Ic, { n: "Phone" }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, "חב״ד נהורה"), /* @__PURE__ */ React.createElement("small", null, C.contact.name || "פרטים יעודכנו לאחר אימות"))), /* @__PURE__ */ React.createElement(Call, { phone: C.contact.phone }))));
+}
+function Religion() {
+  const R = RELIGION;
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "BookOpen" }), "דת וקהילה"), /* @__PURE__ */ React.createElement(Sec, { icon: "Clock", title: "זמני תפילות" }, /* @__PURE__ */ React.createElement("div", { className: "list" }, Object.keys(R.prayers).map((k) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: k }, /* @__PURE__ */ React.createElement(Ic, { n: "Clock" }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, k), /* @__PURE__ */ React.createElement("small", null, R.prayers[k] || "הזמן יעודכן")))))), /* @__PURE__ */ React.createElement(Sec, { icon: "Calendar", title: "תפילות בשבתות" }, /* @__PURE__ */ React.createElement(Items, { items: R.shabbat, icon: "Clock", empty: "זמני התפילות בשבתות יעודכנו כאן." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Calendar", title: "תפילות בחגים" }, /* @__PURE__ */ React.createElement(Items, { items: R.holidays, icon: "Clock", empty: "זמני התפילות בחגים יעודכנו כאן." })), /* @__PURE__ */ React.createElement(Sec, { icon: "BookOpen", title: "שיעורי תורה קבועים" }, R.classes.length ? /* @__PURE__ */ React.createElement("div", { className: "list" }, R.classes.map((c, i) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: i }, /* @__PURE__ */ React.createElement(Ic, { n: "BookOpen" }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, c.topic), c.teacher && /* @__PURE__ */ React.createElement("small", null, "מעביר השיעור: ", c.teacher), /* @__PURE__ */ React.createElement("small", null, [c.day, c.time, c.place].filter(Boolean).join(" · ")))))) : /* @__PURE__ */ React.createElement(Empty, { t: "שיעורי התורה הקבועים יופיעו כאן, עם שם המעביר, יום, שעה ומיקום." })), /* @__PURE__ */ React.createElement(Sec, { icon: "Megaphone", title: "עדכונים ופעילויות קהילתיות" }, /* @__PURE__ */ React.createElement(Items, { items: R.updates, icon: "Megaphone", empty: "אין עדכונים כרגע." })));
+}
+const SB_CFG = { url: "https://zbbwphvgsmfncsqdgnvq.supabase.co", key: "sb_publishable_Kc8uovy3o4YGuT9setkJEQ_8YAVG9Gh" };
+const DEFAULT_SERVICES = SERVICES.slice(), DEFAULT_PHONES = PHONES.slice();
+const ymd = (t) => t ? String(t).slice(0, 10) : null;
+const httpsOnly = (u) => typeof u === "string" && /^https:\/\//.test(u) ? u : null;
+const inWindow = (x) => {
+  const n = Date.now();
+  return (!x.publish_at || new Date(x.publish_at) <= n) && (!x.remove_at || new Date(x.remove_at) >= n);
+};
+const byOrder = (a, b) => {
+  var _a, _b;
+  return ((_a = a.sort_order) != null ? _a : 100) - ((_b = b.sort_order) != null ? _b : 100);
+};
+const waHref = (b) => b.wa ? /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//.test(b.wa) ? b.wa : "https://wa.me/" + String(b.wa).replace(/\D/g, "").replace(/^0/, "972") : "https://wa.me/972" + String(b.phone || "").replace(/^0|\D/g, "");
+function mapAll(R) {
+  const now = /* @__PURE__ */ new Date();
+  const rv = {};
+  R.reviews.filter((r) => r.status === "approved").forEach((r) => (rv[r.business_id] = rv[r.business_id] || []).push(r));
+  BUSINESSES.length = 0;
+  R.businesses.filter((b) => b.status === "published").sort((a, b) => Number(!!b.featured) - Number(!!a.featured) || String(a.name).localeCompare(String(b.name), "he")).forEach((b) => {
+    const L = (rv[b.id] || []).slice().sort((x, y) => String(y.created_at).localeCompare(String(x.created_at)));
+    BUSINESSES.push({ id: b.id, name: b.name, cat: b.category || "אחר", desc: b.description || "", img: httpsOnly(b.image_url), logo: httpsOnly(b.logo_url), hours: b.hours && b.hours.open && b.hours.close ? b.hours : null, area: b.area || "", phone: b.phone || null, wa: b.whatsapp || null, sponsored: !!b.sponsored, rating: L.length ? L.reduce((s, r) => s + r.rating, 0) / L.length : 0, reviews: L.map((r) => ({ n: r.author, t: r.body })) });
+  });
+  ADS.length = 0;
+  R.announcements.filter((a) => a.status === "published" && inWindow(a)).forEach((a) => {
+    var _a, _b;
+    return ADS.push({ id: a.id, title: a.title, text: a.body || "", full: a.full_body || "", img: httpsOnly(a.image_url), date: ymd(a.publish_at || a.created_at), publishAt: ymd(a.publish_at), removeAt: ymd(a.remove_at), order: a.pinned ? ((_a = a.sort_order) != null ? _a : 100) - 1e5 : (_b = a.sort_order) != null ? _b : 100 });
+  });
+  PROMOS.length = 0;
+  R.promos.filter((p) => p.active && (!p.start_at || new Date(p.start_at) <= now) && (!p.end_at || new Date(p.end_at) >= now)).sort(byOrder).forEach((p) => PROMOS.push({ id: p.id, title: p.title, text: p.body || "", img: httpsOnly(p.image_url), target: { type: p.target_type || "", value: p.target_value || "" }, startAt: ymd(p.start_at), endAt: ymd(p.end_at), active: true, popup: !!p.is_popup, every: p.popup_every_hours || 24 }));
+  const C = (s) => R.content.filter((x) => x.section === s && x.status === "published" && inWindow(x)).sort(byOrder).map((x) => Object.assign({}, x.data, { id: x.id }));
+  NEWS.length = 0;
+  C("news").forEach((x) => NEWS.push({ id: x.id, title: x.title, text: x.text, date: fdate(x.date), sub: x.date ? fdate(x.date) : x.text || "" }));
+  EVENTS.length = 0;
+  C("events").forEach((x) => EVENTS.push({ id: x.id, title: x.title, sub: x.sub || fdate(x.date), text: x.text, date: x.date }));
+  const sv = C("services");
+  SERVICES.length = 0;
+  (sv.length ? sv.map((x) => ({ i: x.icon || "Pin", n: x.name, hours: x.hours || null, addr: x.address || null, note: x.note || null, phone: x.phone || null })) : DEFAULT_SERVICES).forEach((x) => SERVICES.push(x));
+  const ph = C("phones");
+  PHONES.length = 0;
+  (ph.length ? ph.map((x) => ({ n: x.name, phone: x.phone || null, hours: x.hours || null, addr: x.address || null, note: x.note || null })) : DEFAULT_PHONES).forEach((x) => PHONES.push(x));
+  CHABAD.events = C("chabad_events");
+  CHABAD.news = C("chabad_news");
+  CHABAD.kids = C("chabad_kids");
+  CHABAD.photos = C("chabad_photos").filter((x) => httpsOnly(x.src)).map((x) => ({ src: x.src, caption: x.caption }));
+  const ct = C("chabad_contact")[0];
+  CHABAD.contact = ct ? { name: ct.name || null, phone: ct.phone || null } : { name: null, phone: null };
+  ["שחרית", "מנחה", "ערבית"].forEach((k) => {
+    const x = C("prayers").find((p) => p.name === k);
+    RELIGION.prayers[k] = x ? x.time : null;
+  });
+  RELIGION.shabbat = C("shabbat");
+  RELIGION.holidays = C("holidays");
+  RELIGION.classes = C("classes");
+  RELIGION.updates = C("religion_updates");
+  const S = Object.fromEntries(R.settings.map((r) => [r.key, r.value]));
+  window.__logo = S.logo ? httpsOnly(S.logo.url) : null;
+  window.__boardSpeed = typeof S.board_speed === "number" && S.board_speed >= 0.05 && S.board_speed <= 3 ? S.board_speed : null;
+  window.__t = S.texts && typeof S.texts === "object" ? S.texts : null;
+  window.__cats = Array.isArray(S.categories) ? S.categories : null;
+  window.__kb = R.kb.filter((k) => k.active);
+}
+function startLive(bump) {
+  if (!SB_CFG.url || !SB_CFG.key || !window.supabase) return;
+  const sb = window.supabase.createClient(SB_CFG.url, SB_CFG.key);
+  window.__sb = sb;
+  let dead = false, timer = null;
+  const pull = async () => {
+    try {
+      const g = (t) => sb.from(t).select("*");
+      const [b, r, a, p, c, s, k] = await Promise.all(["businesses", "reviews", "announcements", "promos", "content_items", "site_settings", "kb_entries"].map(g));
+      const bad = [b, r, a, p, c, s, k].find((x) => x.error);
+      if (bad) {
+        console.warn("live data:", bad.error.message);
+        return;
+      }
+      if (dead) return;
+      mapAll({ businesses: b.data, reviews: r.data, announcements: a.data, promos: p.data, content: c.data, settings: s.data, kb: k.data });
+      bump();
+    } catch (e) {
+      console.warn("live data:", e);
     }
-    return r;
+  };
+  const later = () => {
+    clearTimeout(timer);
+    timer = setTimeout(pull, 300);
+  };
+  pull();
+  const chans = ["businesses", "reviews", "announcements", "promos", "content_items", "site_settings", "kb_entries"].map((t) => sb.channel("pub-" + t).on("postgres_changes", { event: "*", schema: "public", table: t }, later).subscribe());
+  let counted = false;
+  try {
+    counted = sessionStorage.getItem("nh_view");
+  } catch (e) {
+  }
+  if (!counted) {
+    sb.rpc("track_view").then(() => {
+      try {
+        sessionStorage.setItem("nh_view", "1");
+      } catch (e) {
+      }
+    }, () => {
+    });
+  }
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  window.__trackPromo = (id, k) => {
+    if (UUID.test(String(id))) sb.rpc("track_promo", { p: id, k }).then(() => {
+    }, () => {
+    });
+  };
+  window.__trackSearch = (q) => {
+    String(q).toLowerCase().replace(/[^֐-׿a-z\s]/g, " ").split(/\s+/).filter((w) => w.length >= 3 && w.length <= 20).slice(0, 6).forEach((w) => sb.rpc("track_search", { t: w }).then(() => {
+    }, () => {
+    }));
+  };
+  const rpcOk = async (name, args) => {
+    const { data, error } = await sb.rpc(name, args);
+    if (error) throw error;
+    if (data === "rate") throw new Error("rate");
+    if (data !== "ok") throw new Error("invalid");
+  };
+  window.__submitInquiry = (f) => rpcOk("submit_inquiry", { p_name: String(f.name).trim().slice(0, 80), p_contact: String(f.contact).trim().slice(0, 120), p_reason: f.why, p_message: String(f.msg).trim().slice(0, 2e3), p_hp: f.hp || "", p_elapsed_ms: f.elapsed == null ? null : Math.round(f.elapsed) });
+  window.__submitReview = (bid, n, r, t) => rpcOk("submit_review", { p_business: bid, p_author: String(n).trim().slice(0, 60), p_rating: r, p_body: String(t).trim().slice(0, 1e3), p_hp: "", p_elapsed_ms: null });
+  const SIGS = async (f) => {
+    const b = new Uint8Array(await f.slice(0, 12).arrayBuffer()), s = (i, t) => t.every((c, k) => b[i + k] === c);
+    if (s(0, [255, 216, 255])) return ["jpg", "image/jpeg"];
+    if (s(0, [137, 80, 78, 71, 13, 10, 26, 10])) return ["png", "image/png"];
+    if (s(0, [71, 73, 70, 56])) return ["gif", "image/gif"];
+    if (s(0, [82, 73, 70, 70]) && s(8, [87, 69, 66, 80])) return ["webp", "image/webp"];
+    return null;
+  };
+  window.__submitBusiness = async (f) => {
+    if (f.hp) return;
+    let slot = null, logo = null, image = null;
+    if (f.logo || f.image) {
+      const { data, error } = await sb.rpc("new_upload_slot");
+      if (error) throw error;
+      if (!data) throw new Error("rate");
+      slot = data;
+      const up = async (file, kind) => {
+        const t = await SIGS(file);
+        if (!t || file.size > 3 * 1024 * 1024) throw new Error("badfile");
+        const path = "requests/" + slot + "/" + kind + "." + t[0];
+        const r = await sb.storage.from("media").upload(path, file, { contentType: t[1], upsert: false });
+        if (r.error) throw r.error;
+        return sb.storage.from("media").getPublicUrl(path).data.publicUrl;
+      };
+      if (f.logo) logo = await up(f.logo, "logo");
+      if (f.image) image = await up(f.image, "image");
+    }
+    await rpcOk("submit_business", { p_name: String(f.name).trim().slice(0, 120), p_category: f.cat || "אחר", p_description: String(f.desc).trim().slice(0, 2e3), p_phone: String(f.phone).trim(), p_whatsapp: f.wa || null, p_hours: f.hours || null, p_area: String(f.area || "").trim().slice(0, 120), p_slot: slot, p_logo: logo, p_image: image, p_hp: "", p_elapsed_ms: f.elapsed == null ? null : Math.round(f.elapsed) });
+  };
+  return () => {
+    dead = true;
+    clearTimeout(timer);
+    chans.forEach((c) => sb.removeChannel(c));
   };
 }
-/*==END==*/
-
-
-/* ===== כלי DOM (ללא innerHTML: תוכן משתמשים לעולם לא מוזרק כ-HTML) ===== */
-function h(tag,props,...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(props||{})){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(k==='value')e.value=v;else if(k==='checked')e.checked=!!v;else e.setAttribute(k,v===true?'':v)}kids.flat(9).forEach(c=>{if(c==null||c===false)return;e.append(c.nodeType?c:document.createTextNode(String(c)))});return e}
-const IC={dash:'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z',store:'m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.4a2 2 0 0 1 1.4.6L22 7M4 10v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10M2 7a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z',inbox:'M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z',mega:'m3 11 18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6',tag:'M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42zM7.5 7.5h.01',layers:'M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83zM2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17',bot:'M12 8V4H8M4 12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM2 14h2M20 14h2M15 13v2M9 13v2',pal:'M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8zM13.5 6.5h.01M17.5 10.5h.01M6.5 12.5h.01M8.5 7.5h.01',hist:'M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5M12 7v5l4 2',out:'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9',plus:'M5 12h14M12 5v14',pen:'M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z',trash:'M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6',eye:'M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6',eyeoff:'M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49M14.084 14.158a3 3 0 0 1-4.242-4.242M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143M2 2l20 20',up:'m5 12 7-7 7 7M12 19V5',down:'M12 5v14M19 12l-7 7-7-7',x:'M18 6 6 18M6 6l12 12',check:'M20 6 9 17l-5-5',phone:'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z',chat:'M7.9 20A9 9 0 1 0 4 16.1L2 22z',upload:'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12',menu:'M4 12h16M4 6h16M4 18h16',pin:'M12 17v5M9 10.8a2 2 0 0 1-1.1 1.8l-1.8.9A2 2 0 0 0 5 15.2V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.8a2 2 0 0 0-1.1-1.8l-1.8-.9A2 2 0 0 1 15 10.8V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z',bell:'M10.268 21a2 2 0 0 0 3.464 0M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326',undo:'M3 7v6h6M3 13a9 9 0 1 0 3-7.7L3 8',search:'m21 21-4.3-4.3M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z'};
-function ic(n,s=17){const S='http://www.w3.org/2000/svg',v=document.createElementNS(S,'svg');v.setAttribute('width',s);v.setAttribute('height',s);v.setAttribute('viewBox','0 0 24 24');v.setAttribute('fill','none');v.setAttribute('stroke','currentColor');v.setAttribute('stroke-width','2');v.setAttribute('stroke-linecap','round');v.setAttribute('stroke-linejoin','round');v.setAttribute('aria-hidden','true');const p=document.createElementNS(S,'path');p.setAttribute('d',IC[n]||IC.pin);v.append(p);return v}
-const btn=(label,icon,cls,fn,title)=>h('button',{class:'btn '+(cls||''),type:'button',onclick:fn,title:title||(icon&&!label?'':null),'aria-label':title||label||null},icon&&ic(icon,16),label);
-const ibtn=(icon,cls,fn,title)=>btn('',icon,(cls||'g')+' ib',fn,title);
-const fmtDT=d=>d?new Date(d).toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'}):'';
-const fmtD=d=>d?new Date(d).toLocaleDateString('he-IL'):'';
-const bdg=(t,k)=>h('span',{class:'bdg '+(k||'')},t);
-const debounce=(f,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),ms)}};
-
-/* ===== הודעות, אישור ומודאל ===== */
-function toast(msg,type){const t=h('div',{class:'toast '+(type==='err'?'err':''),role:'status'},msg);document.getElementById('toasts').append(t);setTimeout(()=>t.remove(),type==='err'?6000:3500)}
-function modal(title,body,opts={}){const ov=h('div',{class:'ov',role:'dialog','aria-modal':'true'});const box=h('div',{class:'md',style:opts.wide?'max-width:760px':null},h('h3',{},title),body);ov.append(box);const close=()=>{ov.remove();document.removeEventListener('keydown',esc)};const esc=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',esc);ov.addEventListener('mousedown',e=>{if(e.target===ov)close()});document.body.append(ov);return{close,box}}
-function confirmDlg(msg,ok='מחיקה'){return new Promise(res=>{const m=modal('אישור פעולה',h('div',{},h('p',{style:'margin-bottom:14px;line-height:1.6'},msg),h('div',{class:'ft'},btn('ביטול',null,'g',()=>{m.close();res(false)}),btn(ok,'trash','d',()=>{m.close();res(true)}))))})}
-const fail=e=>{console.error('[admin]',e);toast(errText(e),'err');return false};
-
-/* ===== מנוי לשינויים בזמן אמת ===== */
-function watch(table,cb,event='*'){const ch=sb.channel('rt-'+table+'-'+(++uid)).on('postgres_changes',{event,schema:'public',table},debounce(cb,250)).subscribe();subs.push(ch)}
-function clearSubs(){subs.forEach(c=>sb.removeChannel(c));subs=[]}
-
-/* ===== טפסים: הגדרת שדות, אימות והעלאת תמונות ===== */
-const T=(k,l,req,x)=>({k,l,t:'text',req,...x}),A=(k,l,req,x)=>({k,l,t:'area',req,...x}),B=(k,l)=>({k,l,t:'bool'}),SEL=(k,l,opts,req)=>({k,l,t:'select',opts,req}),DT=(k,l)=>({k,l,t:'dt'}),D=(k,l)=>({k,l,t:'date'}),TEL=(k,l,req)=>({k,l,t:'tel',req}),IMG=(k,l,folder)=>({k,l,t:'img',folder});
-const STATUS_PUB=SEL('status','סטטוס',[['draft','טיוטה (לא מוצג באתר)'],['published','מפורסם']],1);
-const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);if(isNaN(d))return'';const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`};
-const MIME={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
-const WA_RE=/^(\d{9,15}|https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\/\S+)$/;
-async function uploadImage(file,folder){
-  if(!MIME[file.type])throw new Error('אפשר להעלות רק JPG, PNG, WEBP או GIF');
-  if(file.size>5*1024*1024)throw new Error('התמונה גדולה מ-5MB');
-  const path=`${folder||'misc'}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${MIME[file.type]}`;
-  const {data:cs}=await sb.auth.getSession();
-  if(!cs||!cs.session)throw friendly({status:401});
-  const {error}=await sb.storage.from('media').upload(path,file,{contentType:file.type,upsert:false});
-  if(error){console.error('[upload]',error);throw friendly(error)}
-  return sb.storage.from('media').getPublicUrl(path).data.publicUrl;
-}
-function buildForm(fields,init,extras){
-  const getters={},nodes=[];
-  fields.forEach(f=>{
-    const val=init[f.k];let get,node,input;
-    const wrap=(inner,cls)=>h('label',{class:'fld '+(cls||'')},inner);
-    if(f.t==='bool'){input=h('input',{type:'checkbox',checked:val,'data-k':f.k});get=()=>input.checked;node=wrap([input,h('span',{},f.l)],'ck')}
-    else if(f.t==='img'){let url=val||null;const pv=h('img',{alt:'',style:url?null:'display:none',src:url||null}),st=h('small',{},'');const fi=h('input',{type:'file',accept:'image/jpeg,image/png,image/webp,image/gif','data-k':f.k});
-      fi.addEventListener('change',async()=>{const file=fi.files[0];if(!file)return;st.textContent='מעלה...';try{url=await uploadImage(file,f.folder);pv.src=url;pv.style.display='';st.textContent='הועלתה'}catch(e){st.textContent='';fail(e)}finally{fi.value=''}});
-      const clr=btn('הסרה',null,'g',()=>{url=null;pv.style.display='none';pv.removeAttribute('src');fi.value=''});
-      get=()=>url;node=h('div',{class:'fld'},h('span',{},f.l),h('div',{class:'img'},pv,h('div',{},fi,st,clr)))}
-    else if(f.t==='hours'){const o=h('input',{type:'time',value:val&&val.open||'','data-k':f.k+'-open'}),c=h('input',{type:'time',value:val&&val.close||'','data-k':f.k+'-close'});get=()=>o.value&&c.value?{open:o.value,close:c.value}:null;f.check=()=>{if(!o.value&&!c.value)return null;if(!o.value||!c.value)return 'יש להזין שעת פתיחה וגם שעת סגירה';if(o.value>=c.value)return 'שעת הסגירה חייבת להיות אחרי הפתיחה'};node=h('div',{class:'fld'},h('span',{},f.l),h('div',{class:'two'},h('label',{},h('small',{},'פתיחה'),o),h('label',{},h('small',{},'סגירה'),c)))}
-    else if(f.t==='select'){const opts=typeof f.opts==='function'?f.opts(extras||{}):f.opts;input=h('select',{'data-k':f.k},opts.map(([v,l])=>h('option',{value:v,selected:String(val??'')===String(v)},l)));get=()=>input.value||null;node=wrap([h('span',{},f.l+(f.req?' *':'')),input])}
-    else if(f.t==='area'){input=h('textarea',{rows:f.rows||3,'data-k':f.k,maxlength:4000},val||'');get=()=>input.value.trim()||null;node=wrap([h('span',{},f.l+(f.req?' *':'')),input])}
-    else if(f.t==='dt'){input=h('input',{type:'datetime-local',value:toLocal(val),'data-k':f.k});get=()=>input.value?new Date(input.value).toISOString():null;node=wrap([h('span',{},f.l),input])}
-    else if(f.t==='tags'){input=h('input',{type:'text','data-k':f.k,value:(val||[]).join(', ')});get=()=>input.value.split(',').map(s=>s.trim()).filter(Boolean);node=wrap([h('span',{},f.l),input,h('small',{},'הפרידו בפסיקים')])}
-    else if(f.t==='num'){input=h('input',{type:'number',min:f.min,max:f.max,value:val??'','data-k':f.k});get=()=>input.value===''?null:Number(input.value);node=wrap([h('span',{},f.l),input])}
-    else{const type={tel:'tel',date:'date',time:'time'}[f.t]||'text';input=h('input',{type,value:val||'','data-k':f.k,maxlength:f.t==='text'||f.t==='tel'?300:null,dir:f.t==='tel'?'ltr':null,placeholder:f.ph||null});get=()=>input.value.trim()||null;node=wrap([h('span',{},f.l+(f.req?' *':'')),input,f.hint&&h('small',{},f.hint)])}
-    getters[f.k]=get;nodes.push(node);
+function catList(base) {
+  const S = window.__cats;
+  if (!S) return base;
+  const out = [];
+  S.forEach((c) => {
+    const b = base.find((x) => x[0] === c.key);
+    if (b && c.visible !== false) out.push([b[0], c.label && String(c.label).trim() || b[1], b[2]]);
   });
-  const values=()=>Object.fromEntries(fields.map(f=>[f.k,getters[f.k]()]));
-  function validate(v){
-    for(const f of fields){
-      const x=v[f.k];
-      if(f.req&&(x==null||x===''||(Array.isArray(x)&&!x.length)))return `השדה "${f.l}" הוא חובה`;
-      if(f.check){const m=f.check();if(m)return m}
-      if(f.t==='tel'&&x&&!/^[0-9+\-\s()]{7,20}$/.test(x))return `"${f.l}": מספר טלפון לא תקין`;
-      if(f.t==='num'&&x!=null&&((f.min!=null&&x<f.min)||(f.max!=null&&x>f.max)))return `"${f.l}": ערך מחוץ לטווח`;
-      if(f.v==='wa'&&x&&!WA_RE.test(x))return `"${f.l}": הזינו מספר (ספרות בלבד) או קישור wa.me`;
+  base.forEach((b) => {
+    if (!S.find((c) => c.key === b[0])) out.push(b);
+  });
+  return out;
+}
+function tabList() {
+  const [h, ...r] = TABS;
+  return [h, ...catList(r)];
+}
+const popKey = (p) => "nh_pop_" + p.id;
+function popSeen(p) {
+  try {
+    const t = Number(localStorage.getItem(popKey(p)));
+    return !!t && Date.now() - t < (p.every || 24) * 36e5;
+  } catch (e) {
+    return false;
+  }
+}
+function popMark(p) {
+  try {
+    localStorage.setItem(popKey(p), String(Date.now()));
+  } catch (e) {
+  }
+}
+const FALLBACK_OFFLINE = "העוזר החכם עדיין לא מחובר למאגר המידע של האתר, ולכן איני יכול לענות בבטחה כעת. בקרוב תוכלו לשאול כאן על עסקים, שירותים וטלפונים חשובים.";
+const FALLBACK_NOMATCH = 'לא מצאתי באתר מידע על כך. נסו לנסח אחרת, או פנו אלינו דרך "צור קשר".';
+function answerFor(q) {
+  if (!window.__sb) return FALLBACK_OFFLINE;
+  const words = String(q).toLowerCase().replace(/[^֐-׿a-z0-9\s]/g, " ").split(/\s+/).filter((w) => w.length > 2);
+  if (!words.length) return FALLBACK_NOMATCH;
+  const stems = words.map((w) => w.length > 3 && /^[הבלמוכש]/.test(w) ? w.slice(1) : w);
+  const score = (hay) => {
+    hay = String(hay).toLowerCase();
+    let s = 0;
+    stems.forEach((w, i) => {
+      if (hay.includes(w) || hay.includes(words[i])) s++;
+    });
+    return s;
+  };
+  const c = [];
+  (window.__kb || []).forEach((k) => {
+    const s = score([k.topic, ...k.keywords || [], ...k.synonyms || []].join(" "));
+    if (s) c.push({ s: s + 3, t: k.answer });
+  });
+  BUSINESSES.forEach((b) => {
+    const s = score([b.name, b.cat, b.desc].join(" "));
+    if (s) c.push({ s, t: b.name + (b.desc ? " - " + b.desc : "") + (b.hours ? " · שעות: " + b.hours.open + "-" + b.hours.close : "") + (b.phone ? " · טלפון: " + b.phone : "") });
+  });
+  SERVICES.forEach((x) => {
+    const s = score(x.n);
+    if (s && (x.hours || x.phone || x.addr)) c.push({ s, t: x.n + (x.hours ? ": " + x.hours : "") + (x.addr ? " · כתובת: " + x.addr : "") + (x.phone ? " · טלפון: " + x.phone : "") });
+  });
+  PHONES.forEach((x) => {
+    const s = score(x.n);
+    if (s && x.phone) c.push({ s, t: x.n + ": " + x.phone + (x.hours ? " · שעות: " + x.hours : "") + (x.addr ? " · כתובת: " + x.addr : "") });
+  });
+  if (!c.length) return FALLBACK_NOMATCH;
+  c.sort((a, b) => b.s - a.s);
+  return c[0].t;
+}
+const QN = [["biz", "עסקים", "Store"], ["news", "עדכונים", "Megaphone"], ["tel", "טלפונים חשובים", "Phone"], ["svc", "שירותים", "Users"], ["events", "אירועים", "Calendar"], ["chabad", "אירועי חב״ד", "Flame"], ["religion", "דת וקהילה", "BookOpen"], ["contact", "צור קשר", "Mail"]];
+const QuickNav = ({ go }) => /* @__PURE__ */ React.createElement("div", { className: "qn pg" }, catList(QN).map(([k, l, i]) => /* @__PURE__ */ React.createElement("button", { key: k, className: "qb", onClick: () => go(k) }, /* @__PURE__ */ React.createElement(I, { n: i, s: 20 }), l)));
+function Home({ go }) {
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("img", { className: "logo", src: window.__logo || LOGO, alt: "נהורה+ כל המושבים במקום אחד" }), /* @__PURE__ */ React.createElement(Chat, null), /* @__PURE__ */ React.createElement(Board, null), /* @__PURE__ */ React.createElement(QuickNav, { go }), /* @__PURE__ */ React.createElement(Promos, { go }), /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Megaphone" }), window.__t && window.__t.news_heading || "הודעות ועדכונים אחרונים"), NEWS.length ? /* @__PURE__ */ React.createElement("div", { className: "list" }, NEWS.slice(0, 4).map((n) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: n.id }, /* @__PURE__ */ React.createElement(Ic, { n: "Megaphone" }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, n.title), /* @__PURE__ */ React.createElement("small", null, n.date))))) : /* @__PURE__ */ React.createElement(Empty, { t: "אין עדכונים חדשים כרגע. הודעות המושב יופיעו כאן." }));
+}
+function AddBiz({ onClose }) {
+  const [f, setF] = useState({ name: "", cat: BIZ_CATS[1], desc: "", phone: "", wa: "", open: "", close: "", area: "" }), [lg, setLg] = useState(null), [im, setIm] = useState(null), [err, setErr] = useState(""), [busy, setBusy] = useState(false), [ok, setOk] = useState(false), t0 = useRef(Date.now()), hp = useRef(null);
+  const u = (k) => (e) => setF({ ...f, [k]: e.target.value });
+  const pick = (set) => (e) => {
+    const x = e.target.files[0];
+    if (!x) {
+      set(null);
+      return;
     }
-    return null;
-  }
-  return{el:h('div',{},nodes),values,validate};
+    if (!/^image\/(jpeg|png|webp|gif)$/.test(x.type) || x.size > 3 * 1024 * 1024) {
+      setErr("אפשר להעלות רק תמונות JPG, PNG, WEBP או GIF, עד 3MB.");
+      e.target.value = "";
+      set(null);
+      return;
+    }
+    setErr("");
+    set(x);
+  };
+  const sub = async (e) => {
+    e.preventDefault();
+    setErr("");
+    const name = f.name.trim(), desc = f.desc.trim(), wa = f.wa.replace(/[\s-]/g, "");
+    if (!name) return setErr("יש להזין שם עסק.");
+    if (desc.length < 5) return setErr("יש להזין תיאור קצר של העסק.");
+    if (!/^[0-9+\-\s()]{7,20}$/.test(f.phone.trim())) return setErr("מספר הטלפון אינו תקין.");
+    if (wa && !/^\d{9,15}$/.test(wa)) return setErr("מספר הוואטסאפ אינו תקין (ספרות בלבד).");
+    if ((f.open || f.close) && (!f.open || !f.close || f.open >= f.close)) return setErr("שעות הפעילות אינן תקינות: יש להזין פתיחה וסגירה, והסגירה אחרי הפתיחה.");
+    setBusy(true);
+    try {
+      if (!window.__submitBusiness) throw new Error("offline");
+      await window.__submitBusiness({ name, cat: f.cat, desc, phone: f.phone.trim(), wa, hours: f.open ? { open: f.open, close: f.close } : null, area: f.area.trim(), logo: lg, image: im, hp: hp.current ? hp.current.value : "", elapsed: Date.now() - t0.current });
+      setOk(true);
+    } catch (x) {
+      const m = x && x.message;
+      setErr(m === "rate" ? "נשלחו הרבה בקשות בזמן קצר. נסו שוב מאוחר יותר." : m === "badfile" ? "קובץ התמונה אינו תקין. יש לבחור תמונת JPG, PNG, WEBP או GIF עד 3MB." : m === "offline" ? "האתר עדיין לא מחובר למסד הנתונים. נסו שוב מאוחר יותר." : /^PGRST20[245]$/.test(x && x.code || "") ? "השרת מתעדכן כרגע. נסו שוב בעוד דקה (" + x.code + ")." : "לא ניתן היה לשלוח. בדקו את הפרטים ונסו שוב" + (x && (x.code || x.status) ? " (" + (x.code || x.status) + ")" : "") + ".");
+      console.error("[add-business]", x);
+    }
+    setBusy(false);
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "ov", role: "dialog", "aria-modal": "true", onMouseDown: (e) => {
+    if (e.target === e.currentTarget) onClose();
+  } }, /* @__PURE__ */ React.createElement("div", { className: "md" }, /* @__PURE__ */ React.createElement("div", { className: "row", style: { justifyContent: "space-between", marginBottom: 8 } }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0 } }, /* @__PURE__ */ React.createElement(I, { n: "Store" }), "הוספת עסק לאתר"), /* @__PURE__ */ React.createElement("button", { className: "btn ghost", "aria-label": "סגירה", onClick: onClose }, /* @__PURE__ */ React.createElement(I, { n: "X", s: 16 }))), ok ? /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "ok" }, "הבקשה התקבלה בהצלחה! העסק יפורסם באתר לאחר אישור מנהל המערכת."), /* @__PURE__ */ React.createElement("button", { className: "btn", style: { marginTop: 12 }, onClick: onClose }, "סגירה")) : /* @__PURE__ */ React.createElement("form", { onSubmit: sub, noValidate: true }, /* @__PURE__ */ React.createElement("input", { ref: hp, name: "website", tabIndex: -1, autoComplete: "off", "aria-hidden": "true", style: { position: "absolute", width: 1, height: 1, opacity: 0, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" } }), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "שם העסק *", /* @__PURE__ */ React.createElement("input", { "data-k": "name", maxLength: 120, value: f.name, onChange: u("name") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "קטגוריה", /* @__PURE__ */ React.createElement("select", { "data-k": "cat", value: f.cat, onChange: u("cat") }, BIZ_CATS.slice(1).map((k) => /* @__PURE__ */ React.createElement("option", { key: k }, k)))), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "תיאור העסק *", /* @__PURE__ */ React.createElement("textarea", { "data-k": "desc", rows: "3", maxLength: 2e3, value: f.desc, onChange: u("desc") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "טלפון *", /* @__PURE__ */ React.createElement("input", { "data-k": "phone", type: "tel", dir: "ltr", value: f.phone, onChange: u("phone") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "וואטסאפ (אם שונה מהטלפון)", /* @__PURE__ */ React.createElement("input", { "data-k": "wa", type: "tel", dir: "ltr", value: f.wa, onChange: u("wa") })), /* @__PURE__ */ React.createElement("div", { className: "fld" }, "שעות פעילות (אופציונלי)", /* @__PURE__ */ React.createElement("div", { className: "hrs" }, /* @__PURE__ */ React.createElement("input", { "data-k": "open", type: "time", "aria-label": "שעת פתיחה", value: f.open, onChange: u("open") }), /* @__PURE__ */ React.createElement("input", { "data-k": "close", type: "time", "aria-label": "שעת סגירה", value: f.close, onChange: u("close") }))), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "אזור פעילות", /* @__PURE__ */ React.createElement("input", { "data-k": "area", maxLength: 120, value: f.area, onChange: u("area") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "לוגו (JPG, PNG, WEBP, GIF עד 3MB)", /* @__PURE__ */ React.createElement("input", { "data-k": "logo", type: "file", accept: "image/jpeg,image/png,image/webp,image/gif", onChange: pick(setLg) })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "תמונת העסק", /* @__PURE__ */ React.createElement("input", { "data-k": "image", type: "file", accept: "image/jpeg,image/png,image/webp,image/gif", onChange: pick(setIm) })), err && /* @__PURE__ */ React.createElement("div", { className: "err", role: "alert" }, err), /* @__PURE__ */ React.createElement("p", { style: { fontSize: 12.5, color: "var(--mut)", margin: "0 0 10px" } }, "העסק יפורסם באתר רק לאחר אישור מנהל המערכת."), /* @__PURE__ */ React.createElement("button", { className: "btn", disabled: busy }, /* @__PURE__ */ React.createElement(I, { n: "Send", s: 16 }), busy ? "שולח..." : "שליחה לאישור"))));
 }
+function Biz() {
+  const [q, setQ] = useState(""), [c, setC] = useState("הכל"), [rv, setRv] = useState(null), [done, setDone] = useState(false), [st, setSt] = useState(0), [nm, setNm] = useState(""), [tx, setTx] = useState(""), [add, setAdd] = useState(false);
+  const L = BUSINESSES.filter((b) => (c === "הכל" || b.cat === c) && (b.name + b.desc).includes(q));
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Store" }), "עסקים ובעלי מקצוע"), /* @__PURE__ */ React.createElement("button", { className: "addbiz", onClick: () => setAdd(true) }, /* @__PURE__ */ React.createElement("span", { className: "pl" }, /* @__PURE__ */ React.createElement(I, { n: "Plus", s: 20 })), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "הוספת עסק לאתר"), /* @__PURE__ */ React.createElement("small", null, "בעלי עסקים ובעלי מקצוע מהמושב: השאירו פרטים והעסק יפורסם לאחר אישור"))), add && /* @__PURE__ */ React.createElement(AddBiz, { onClose: () => setAdd(false) }), /* @__PURE__ */ React.createElement("div", { className: "card", style: { padding: 10 } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("span", { className: "ic", style: { background: "none" } }, /* @__PURE__ */ React.createElement(I, { n: "Search" })), /* @__PURE__ */ React.createElement("input", { style: { flex: 1, border: 0, outline: 0, background: "none" }, value: q, onChange: (e) => setQ(e.target.value), placeholder: "חיפוש לפי שם או מילת מפתח" }))), /* @__PURE__ */ React.createElement("div", { className: "chips" }, BIZ_CATS.map((k) => /* @__PURE__ */ React.createElement("button", { key: k, className: "chip" + (c === k ? " on" : ""), onClick: () => setC(k) }, k))), L.length ? /* @__PURE__ */ React.createElement("div", { className: "list" }, L.map((b) => {
+    const o = isOpen(b.hours);
+    return /* @__PURE__ */ React.createElement("div", { className: "card", key: b.id }, /* @__PURE__ */ React.createElement("div", { className: "it" }, b.logo ? /* @__PURE__ */ React.createElement("img", { src: b.logo, width: "42", height: "42", style: { borderRadius: 10 } }) : /* @__PURE__ */ React.createElement("span", { className: "ic", style: { width: 42, height: 42 } }, /* @__PURE__ */ React.createElement(I, { n: "Store", s: 22 })), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, b.name), /* @__PURE__ */ React.createElement("small", null, b.cat, b.area ? " · " + b.area : "", b.sponsored ? " · ממומן" : ""))), b.img && /* @__PURE__ */ React.createElement("img", { src: b.img, style: { width: "100%", borderRadius: 10, margin: "10px 0" } }), /* @__PURE__ */ React.createElement("p", { style: { fontSize: 14, margin: "8px 0" } }, b.desc), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13.5, color: "var(--mut)", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" } }, b.hours && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(I, { n: "Clock", s: 15 }), `${b.hours.open}-${b.hours.close}`, o !== null && /* @__PURE__ */ React.createElement("b", { style: { color: o ? "#3f7a2a" : "#a33" } }, o ? "פתוח" : "סגור")), /* @__PURE__ */ React.createElement(Stars, { v: Math.round(b.rating || 0) })), (b.reviews || []).slice(0, 2).map((r, k) => /* @__PURE__ */ React.createElement("p", { key: k, style: { fontSize: 13, color: "var(--mut)", marginTop: 6 } }, /* @__PURE__ */ React.createElement("b", null, r.n), ": ", r.t)), /* @__PURE__ */ React.createElement("div", { className: "row", style: { marginTop: 10, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement(Call, { phone: b.phone }), (b.wa || b.phone) && /* @__PURE__ */ React.createElement("a", { className: "btn ghost", href: waHref(b) }, /* @__PURE__ */ React.createElement(I, { n: "Chat", s: 16 }), "וואטסאפ"), /* @__PURE__ */ React.createElement("button", { className: "btn ghost", onClick: () => {
+      setRv(b.id);
+      setDone(false);
+    } }, /* @__PURE__ */ React.createElement(I, { n: "Star", s: 16 }), "כתיבת ביקורת")), rv === b.id && (done ? /* @__PURE__ */ React.createElement("div", { className: "ok", style: { marginTop: 10 } }, "הביקורת התקבלה ותפורסם לאחר אישור מנהל.") : /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12 } }, /* @__PURE__ */ React.createElement(Stars, { v: st, on: setSt }), /* @__PURE__ */ React.createElement("div", { className: "fld", style: { marginTop: 8 } }, /* @__PURE__ */ React.createElement("input", { placeholder: "שם", value: nm, onChange: (e) => setNm(e.target.value) }), /* @__PURE__ */ React.createElement("textarea", { rows: "3", placeholder: "הביקורת שלכם", value: tx, onChange: (e) => setTx(e.target.value) })), /* @__PURE__ */ React.createElement("button", { className: "btn", onClick: async () => {
+      if (!(st && nm && tx)) return;
+      try {
+        if (window.__submitReview) await window.__submitReview(b.id, nm, st, tx);
+        setDone(true);
+      } catch (e) {
+        alert(e && e.message === "rate" ? "כבר שלחתם ביקורת לעסק זה היום. נסו שוב מחר." : "לא ניתן היה לשלוח. ודאו שהביקורת ללא קישורים ונסו שוב.");
+      }
+    } }, "שליחה לאישור"))));
+  })) : /* @__PURE__ */ React.createElement(Empty, { t: "עדיין לא נוספו עסקים. בקרוב יופיעו כאן עסקים ובעלי מקצוע מהמושב והסביבה." }));
+}
+const Simple = ({ title, icon, items, empty }) => /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: icon }), title), items.length ? /* @__PURE__ */ React.createElement("div", { className: "list" }, items.map((x, i) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: i }, /* @__PURE__ */ React.createElement(Ic, { n: icon }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, x.title), /* @__PURE__ */ React.createElement("small", null, x.sub))))) : /* @__PURE__ */ React.createElement(Empty, { t: empty }));
+function Services() {
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Users" }), "שירותים קהילתיים"), /* @__PURE__ */ React.createElement("div", { className: "list" }, SERVICES.map((s, k) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: k, style: { justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("div", { className: "it" }, /* @__PURE__ */ React.createElement(Ic, { n: s.i }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, s.n), /* @__PURE__ */ React.createElement("small", null, [s.hours, s.addr].filter(Boolean).join(" · ") || "שעות ופרטים יעודכנו לאחר אימות"), s.note && /* @__PURE__ */ React.createElement("small", null, s.note))), s.phone && /* @__PURE__ */ React.createElement(Call, { phone: s.phone })))));
+}
+function Phones() {
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Phone" }), "טלפונים חשובים"), /* @__PURE__ */ React.createElement("div", { className: "list" }, PHONES.map((p, k) => /* @__PURE__ */ React.createElement("div", { className: "card it", key: k, style: { justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("div", { className: "it" }, /* @__PURE__ */ React.createElement(Ic, { n: "Shield" }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, p.n), (p.hours || p.addr) && /* @__PURE__ */ React.createElement("small", null, [p.hours, p.addr].filter(Boolean).join(" · ")), p.note && /* @__PURE__ */ React.createElement("small", null, p.note))), /* @__PURE__ */ React.createElement(Call, { phone: p.phone })))));
+}
+function Contact() {
+  const [f, setF] = useState({ name: "", contact: "", why: "כללי", msg: "" }), [ok, setOk] = useState(false), t0 = useRef(Date.now()), hp = useRef(null);
+  const u = (k) => (e) => setF({ ...f, [k]: e.target.value });
+  const sub = async (e) => {
+    e.preventDefault();
+    try {
+      if (window.__submitInquiry) await window.__submitInquiry({ ...f, hp: hp.current ? hp.current.value : "", elapsed: Date.now() - t0.current });
+      setOk(true);
+    } catch (x) {
+      alert(x && x.message === "rate" ? "נשלחו הרבה פניות בזמן קצר. נסו שוב מאוחר יותר." : "לא ניתן היה לשלוח. בדקו שהטלפון או האימייל תקינים ונסו שוב.");
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "pg" }, /* @__PURE__ */ React.createElement("h2", null, /* @__PURE__ */ React.createElement(I, { n: "Mail" }), "פנייה למנהל האתר"), ok ? /* @__PURE__ */ React.createElement("div", { className: "ok" }, "פנייתכם התקבלה בהצלחה. נשוב אליכם בהקדם האפשרי.") : /* @__PURE__ */ React.createElement("form", { className: "card", onSubmit: sub }, /* @__PURE__ */ React.createElement("input", { ref: hp, name: "website", tabIndex: -1, autoComplete: "off", "aria-hidden": "true", style: { position: "absolute", width: 1, height: 1, opacity: 0, overflow: "hidden", clip: "rect(0 0 0 0)", pointerEvents: "none" } }), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "שם מלא", /* @__PURE__ */ React.createElement("input", { required: true, value: f.name, onChange: u("name") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "טלפון או אימייל", /* @__PURE__ */ React.createElement("input", { required: true, value: f.contact, onChange: u("contact") })), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "סיבת הפנייה", /* @__PURE__ */ React.createElement("select", { value: f.why, onChange: u("why") }, ["כללי", "הוספת עסק", "דיווח על טעות", "הצעה לשיפור", "אחר"].map((x) => /* @__PURE__ */ React.createElement("option", { key: x }, x)))), /* @__PURE__ */ React.createElement("label", { className: "fld" }, "הודעה", /* @__PURE__ */ React.createElement("textarea", { required: true, rows: "4", value: f.msg, onChange: u("msg") })), /* @__PURE__ */ React.createElement("button", { className: "btn" }, /* @__PURE__ */ React.createElement(I, { n: "Send", s: 16 }), "שליחה")));
+}
+const TABS = [["home", "בית", "Home"], ["biz", "עסקים", "Store"], ["ads", "מודעות", "Pin"], ["news", "עדכונים", "Megaphone"], ["events", "אירועים", "Calendar"], ["svc", "שירותים", "Users"], ["tel", "טלפונים", "Phone"], ["contact", "צור קשר", "Mail"]];
+function App() {
+  const [t, setT] = useState(() => location.hash.slice(1) || "home");
+  useEffect(() => {
+    const h = () => setT(location.hash.slice(1) || "home");
+    addEventListener("hashchange", h);
+    return () => removeEventListener("hashchange", h);
+  }, []);
+  const [ver, bump] = useState(0);
+  useEffect(() => startLive(() => bump((x) => x + 1)), []);
+  const go = (k) => {
+    location.hash = k === "home" ? "" : k;
+    setT(k);
+    scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const V = { home: /* @__PURE__ */ React.createElement(Home, { go }), biz: /* @__PURE__ */ React.createElement(Biz, null), ads: /* @__PURE__ */ React.createElement(Simple, { title: "לוח מודעות", icon: "Pin", items: activeAds().map((a) => ({ title: a.title, sub: fdate(a.date) })), empty: "אין מודעות כרגע." }), news: /* @__PURE__ */ React.createElement(Simple, { title: "הודעות ועדכונים", icon: "Megaphone", items: NEWS, empty: "אין עדכונים כרגע." }), events: /* @__PURE__ */ React.createElement(Simple, { title: "אירועים ופעילויות", icon: "Calendar", items: EVENTS, empty: "אין אירועים קרובים כרגע." }), svc: /* @__PURE__ */ React.createElement(Services, null), tel: /* @__PURE__ */ React.createElement(Phones, null), contact: /* @__PURE__ */ React.createElement(Contact, null), chabad: /* @__PURE__ */ React.createElement(Chabad, null), religion: /* @__PURE__ */ React.createElement(Religion, null) };
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("main", { className: "wrap", key: t }, V[t] || V.home), /* @__PURE__ */ React.createElement(Popup, { go, v: ver }), /* @__PURE__ */ React.createElement("nav", { "aria-label": "ניווט ראשי" }, tabList().map(([k, l, i]) => /* @__PURE__ */ React.createElement("button", { key: k, className: t === k ? "on" : "", onClick: () => go(k) }, /* @__PURE__ */ React.createElement(I, { n: i, s: 21 }), l))));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(/* @__PURE__ */ React.createElement(App, null));
 
-/* ===== מנוע CRUD כללי ===== */
-async function crud(root,cfg){
-  const listBox=h('div'),head=h('div',{class:'ph'});root.replaceChildren(head,listBox);
-  let rows=[],extras={};
-  const sorter=cfg.sort||(cfg.orderable?((a,b)=>(a.sort_order-b.sort_order)||String(b.created_at).localeCompare(String(a.created_at))):((a,b)=>String(b.created_at).localeCompare(String(a.created_at))));
-  async function load(){
-    try{if(cfg.init)extras=await cfg.init()}catch(e){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(e)));return}
-    let q=sb.from(cfg.table).select(cfg.select||'*');if(cfg.eq)for(const[k,v]of Object.entries(cfg.eq))q=q.eq(k,v);
-    const {data,error}=await q;if(error){listBox.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}
-    rows=(data||[]).slice().sort(sorter);paint();
-  }
-  const patch=async(row,obj)=>{const {error}=await sb.from(cfg.table).update(obj).eq('id',row.id);if(error)return fail(error);load()};
-  async function move(i,dir){const j=i+dir;if(j<0||j>=rows.length)return;const a=rows.slice();[a[i],a[j]]=[a[j],a[i]];const ups=[];a.forEach((r,idx)=>{if(r.sort_order!==idx*10)ups.push(sb.from(cfg.table).update({sort_order:idx*10}).eq('id',r.id))});const rs=await Promise.all(ups);const e=rs.find(r=>r.error);if(e)return fail(e.error);load()}
-  async function del(row){if(!await confirmDlg(cfg.delMsg||'למחוק את הפריט? הפעולה נרשמת בהיסטוריית השינויים וניתנת לשחזור משם.'))return;const {error}=await sb.from(cfg.table).delete().eq('id',row.id);if(error)return fail(error);toast('הפריט נמחק');load()}
-  function openForm(row){
-    const init=cfg.fromDb?cfg.fromDb(row||{}):(row||{...(cfg.defaults||{})});
-    const fm=buildForm(cfg.fields,init,extras);let m;
-    const save=async()=>{
-      const v=fm.values();let msg=fm.validate(v);if(!msg&&cfg.validate)msg=cfg.validate(v);if(msg)return toast(msg,'err');
-      let out=cfg.toDb?cfg.toDb(v,row):v;
-      if(cfg.orderable)out.sort_order=row?row.sort_order:(rows.length?Math.min(...rows.map(r=>r.sort_order))-10:0);
-      if(cfg.eq)Object.assign(out,cfg.eq);
-      const {error}=row?await sb.from(cfg.table).update(out).eq('id',row.id):await sb.from(cfg.table).insert(out);
-      if(error)return fail(error);m.close();toast(v.status==='draft'?'נשמר כטיוטה':'נשמר');load();
-    };
-    const pv=cfg.preview&&btn('תצוגה מקדימה','eye','g',()=>previewDlg(cfg.preview(fm.values())));
-    m=modal(row?'עריכה':'הוספה',h('div',{},fm.el,h('div',{class:'ft'},pv,btn('ביטול',null,'g',()=>m.close()),btn('שמירה','check','',save))));
-  }
-  function paint(){
-    const canAdd=!(cfg.single&&rows.length);
-    head.replaceChildren(h('h2',{},cfg.title),cfg.headExtra&&cfg.headExtra(rows,load),canAdd&&btn('הוספה','plus','',()=>openForm(null)));
-    if(!rows.length){listBox.replaceChildren(h('div',{class:'card empty'},cfg.empty||'עדיין אין פריטים.',cfg.seed&&h('div',{style:'margin-top:10px'},btn(cfg.seed.label,'plus','g',async()=>{const {error}=await sb.from(cfg.table).insert(cfg.seed.rows());if(error)return fail(error);toast('נוסף');load()}))));return}
-    const tb=h('table',{},h('thead',{},h('tr',{},cfg.cols.map(c=>h('th',{},c[0])),h('th',{},''))),h('tbody',{},rows.map((r,i)=>{
-      const t=cfg.toggle,on=t&&t.on(r);
-      return h('tr',{'data-id':r.id},cfg.cols.map(c=>h('td',{},c[1](r))),h('td',{class:'ac'},
-        cfg.orderable&&ibtn('up','g',()=>move(i,-1),'העלאה'),cfg.orderable&&ibtn('down','g',()=>move(i,1),'הורדה'),
-        cfg.rowActions&&cfg.rowActions(r,load),
-        t&&ibtn(on?'eyeoff':'eye','g',()=>patch(r,t.set(r,!on)),on?t.offTitle||'הסתרה':t.onTitle||'פרסום'),
-        ibtn('pen','g',()=>openForm(r),'עריכה'),ibtn('trash','d',()=>del(r),'מחיקה')))
-    })));
-    listBox.replaceChildren(cfg.before&&cfg.before(rows),h('div',{class:'tw'},tb));
-  }
-  watch(cfg.table,load);
-  await load();
-}
-function previewDlg(p){const m=modal('תצוגה מקדימה (כך יופיע באתר)',h('div',{},h('div',{class:'card'},p.img&&h('img',{src:p.img,alt:'',style:'width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-bottom:8px'}),h('b',{style:'font-size:17px'},p.title||'(ללא כותרת)'),p.sub&&h('div',{style:'color:#b09a55;font-size:13px;margin-top:2px'},p.sub),p.body&&h('p',{style:'margin-top:8px;line-height:1.6'},p.body)),h('div',{class:'ft',style:'margin-top:12px'},btn('סגירה',null,'g',()=>m.close()))))}
-const statusBdg=r=>r.status==='published'?bdg('מפורסם'):r.status==='hidden'?bdg('מוסתר','m'):bdg('טיוטה','w');
-const pubToggle={on:r=>r.status==='published',set:(r,on)=>({status:on?'published':'draft'}),offTitle:'החזרה לטיוטה',onTitle:'פרסום'};
-
-/* ===== הגדרות אתר ===== */
-async function getSettings(){const {data,error}=await sb.from('site_settings').select('*');if(error)throw error;return Object.fromEntries((data||[]).map(r=>[r.key,r.value]))}
-async function putSetting(key,value){const {error}=await sb.from('site_settings').upsert({key,value,updated_at:new Date().toISOString()},{onConflict:'key'});if(error)throw error}
-
-/* ===== דפים ===== */
-const BIZ_CATS=['בעלי מקצוע','מזון','שירותי רכב','בריאות ויופי','חינוך','אחר'];
-const waLink=v=>!v?null:/^https:/.test(v)?v:'https://wa.me/'+(String(v).replace(/\D/g,'').replace(/^0/,'972'));
-const phoneLike=s=>s&&!s.includes('@')&&s.replace(/\D/g,'').length>=9;
-const telHref=s=>'tel:'+s.replace(/[^\d+]/g,'');
-
-async function pDashboard(root){
-  root.replaceChildren(h('div',{class:'empty'},'טוען...'));
-  const cnt=(t,f)=>{let q=sb.from(t).select('*',{count:'exact',head:true});if(f)q=f(q);return q.then(r=>{if(r.error)throw r.error;return r.count||0})};
-  try{
-    const [biz,pub,inq,rev,pr,views,terms]=await Promise.all([cnt('businesses'),cnt('businesses',q=>q.eq('status','published')),cnt('inquiries',q=>q.eq('status','new')),cnt('reviews',q=>q.eq('status','pending')),sb.from('promos').select('active,start_at,end_at'),sb.from('page_views').select('*').order('day',{ascending:false}).limit(30),sb.from('search_stats').select('*').order('hits',{ascending:false}).limit(10)]);
-    [pr,views,terms].forEach(r=>{if(r.error)throw r.error});
-    const now=Date.now(),activePromos=pr.data.filter(p=>p.active&&(!p.start_at||new Date(p.start_at)<=now)&&(!p.end_at||new Date(p.end_at)>=now)).length;
-    const vd=views.data||[],total=vd.reduce((s,r)=>s+r.views,0),today=vd.find(r=>r.day===new Date().toISOString().slice(0,10));
-    const last=vd.slice(0,14).reverse(),max=Math.max(1,...last.map(r=>r.views));
-    const S=(l,v,i)=>h('div',{class:'card stat'},h('span',{},ic(i,16),l),h('b',{},v));
-    root.replaceChildren(h('div',{class:'ph'},h('h2',{},'לוח בקרה')),h('div',{class:'grid'},S('כניסות ב-30 הימים האחרונים',total,'dash'),S('כניסות היום',today?today.views:0,'dash'),S('עסקים רשומים',`${biz} (${pub} מפורסמים)`,'store'),S('פניות חדשות',inq,'inbox'),S('ביקורות ממתינות לאישור',rev,'star'),S('פרסומות פעילות',activePromos,'tag')),
-      h('div',{class:'two'},h('div',{class:'card'},h('b',{},'כניסות ב-14 הימים האחרונים'),last.length?h('div',{class:'bars'},last.map(r=>h('div',{style:`height:${Math.round(r.views/max*100)}%`,title:`${fmtD(r.day)}: ${r.views}`}))):h('div',{class:'empty'},'עדיין אין נתוני כניסות.')),
-        h('div',{class:'card'},h('b',{},'החיפושים הנפוצים בעוזר החכם'),h('p',{style:'color:#6d7561;font-size:12.5px;margin:2px 0 8px'},'מילים בודדות בלבד, ללא פרטים מזהים.'),terms.data.length?h('table',{},h('tbody',{},terms.data.map(t=>h('tr',{},h('td',{},t.term),h('td',{class:'ac'},t.hits))))):h('div',{class:'empty'},'עדיין אין חיפושים.'))));
-  }catch(e){root.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(e)))}
-}
-
-function pBusinesses(root){return crud(root,{title:'עסקים ובעלי מקצוע',table:'businesses',folderless:1,
-  fields:[T('name','שם העסק',1),SEL('category','קטגוריה',BIZ_CATS.map(c=>[c,c]),1),A('description','תיאור מקצועי'),IMG('logo_url','לוגו','logos'),IMG('image_url','תמונת העסק','businesses'),{k:'hours',l:'שעות פתיחה',t:'hours'},TEL('phone','טלפון'),T('area','אזור פעילות'),{k:'whatsapp',l:'וואטסאפ',t:'text',v:'wa',hint:'מספר או קישור wa.me',ph:'0501234567'},B('featured','עסק מומלץ'),B('sponsored','עסק ממומן (יסומן "ממומן" באתר)'),SEL('status','סטטוס',[['draft','טיוטה'],['published','מפורסם'],['hidden','מוסתר (לא נמחק)']],1)],
-  defaults:{status:'draft'},
-  cols:[['שם',r=>h('b',{},r.name)],['קטגוריה',r=>r.category||''],['סטטוס',statusBdg],['סימונים',r=>[r.featured&&bdg('מומלץ','w'),' ',r.sponsored&&bdg('ממומן','w')]],['טלפון',r=>r.phone||'']],
-  toggle:{on:r=>r.status==='published',set:(r,on)=>({status:on?'published':'hidden'}),offTitle:'הסתרה (ללא מחיקה)',onTitle:'פרסום'},
-  preview:v=>({title:v.name,sub:v.category,body:v.description,img:v.image_url}),
-  empty:'עדיין לא נוספו עסקים.'})}
-
-async function pBizReq(root){
-  let filter='pending',rows=[];const box=h('div'),pills=h('div',{class:'pills'});
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'עסקים ממתינים לאישור')),pills,box);
-  const FIELDS=[T('name','שם העסק',1),SEL('category','קטגוריה',BIZ_CATS.map(c=>[c,c]),1),A('description','תיאור העסק',1),TEL('phone','טלפון',1),{k:'whatsapp',l:'וואטסאפ',t:'text',v:'wa',hint:'מספר או קישור wa.me',ph:'0501234567'},{k:'hours',l:'שעות פעילות',t:'hours'},T('area','אזור פעילות'),IMG('logo_url','לוגו','logos'),IMG('image_url','תמונת העסק','businesses')];
-  async function load(){
-    const {data,error}=await sb.from('business_requests').select('*').order('created_at',{ascending:false});
-    if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}
-    rows=data;paint();refreshBadges();
-  }
-  const stBdg=r=>r.status==='approved'?bdg('אושר ופורסם'):r.status==='rejected'?bdg('נדחה','w'):bdg('ממתין לאישור');
-  async function save(r,v){const payload={};FIELDS.forEach(f=>{payload[f.k]=v[f.k]===undefined?null:v[f.k]});const {error}=await sb.from('business_requests').update(payload).eq('id',r.id);if(error){fail(error);return false}return true}
-  function open(r){
-    const fm=buildForm(FIELDS,r),why=h('input',{class:'inp','data-k':'reject_reason',maxlength:500,placeholder:'סיבת הדחייה (אופציונלי, לשימושכם בלבד)',value:r.reject_reason||''});
-    const m=modal('בקשת הוספת עסק',h('div',{},
-      h('p',{style:'font-size:13px;color:#6d7561;margin-bottom:10px'},'התקבלה ב-',fmtDT(r.created_at),' · ',stBdg(r),r.status==='approved'?' (העסק כבר מוצג באתר ומנוהל בדף "עסקים")':''),
-      fm.el,
-      r.status!=='approved'&&h('label',{class:'fld'},h('span',{},'דחיית הבקשה'),why),
-      h('div',{class:'ft'},
-        btn('סגירה',null,'g',()=>m.close()),
-        r.status!=='approved'&&btn('דחייה','x','g',async()=>{const {error}=await sb.from('business_requests').update({status:'rejected',reject_reason:why.value.trim()||null,reviewed_at:new Date().toISOString()}).eq('id',r.id);if(error)return fail(error);m.close();toast('הבקשה נדחתה. העסק לא יפורסם');load()}),
-        btn('שמירת שינויים','check','g',async()=>{const v=fm.values(),msg=fm.validate(v);if(msg)return toast(msg,'err');if(!await save(r,v))return;m.close();toast('השינויים נשמרו');load()}),
-        r.status!=='approved'&&btn('אישור ופרסום','check',null,async()=>{const v=fm.values(),msg=fm.validate(v);if(msg)return toast(msg,'err');if(!await save(r,v))return;const {error}=await sb.rpc('approve_business_request',{p_id:r.id});if(error)return fail(error);m.close();toast('העסק אושר ופורסם באתר');load()}))),{wide:true});
-  }
-  async function del(r){if(!await confirmDlg('למחוק את הבקשה לצמיתות? (עסק שכבר אושר לא יימחק מהאתר)'))return;const {error}=await sb.from('business_requests').delete().eq('id',r.id);if(error)return fail(error);toast('הבקשה נמחקה');load()}
-  function paint(){
-    const L=[['pending','ממתינים'],['approved','אושרו'],['rejected','נדחו'],['all','הכל']];
-    pills.replaceChildren(...L.map(([k,l])=>h('button',{class:'pill'+(filter===k?' on':''),onclick:()=>{filter=k;paint()}},`${l} (${k==='all'?rows.length:rows.filter(r=>r.status===k).length})`)));
-    const list=rows.filter(r=>filter==='all'||r.status===filter);
-    if(!list.length){box.replaceChildren(h('div',{class:'card empty'},filter==='pending'?'אין עסקים שממתינים לאישור.':'אין בקשות להצגה.'));return}
-    box.replaceChildren(h('div',{class:'tw'},h('table',{},h('thead',{},h('tr',{},['שם העסק','קטגוריה','טלפון','אזור','התקבל','סטטוס',''].map(x=>h('th',{},x)))),h('tbody',{},list.map(r=>h('tr',{'data-id':r.id},h('td',{},h('b',{},r.name)),h('td',{},r.category||''),h('td',{dir:'ltr',style:'text-align:right'},r.phone||''),h('td',{},r.area||''),h('td',{},fmtDT(r.created_at)),h('td',{},stBdg(r)),h('td',{class:'ac'},btn(r.status==='pending'?'צפייה וטיפול':'פרטים','eye','g',()=>open(r)),ibtn('trash','g',()=>del(r),'מחיקה'))))))));
-  }
-  watch('business_requests',load);await load();
-}
-
-async function pReviews(root){
-  let filter='pending',rows=[],names={};const box=h('div'),pills=h('div',{class:'pills'});
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'ביקורות')),pills,box);
-  async function load(){
-    const [r,b]=await Promise.all([sb.from('reviews').select('*').order('created_at',{ascending:false}),sb.from('businesses').select('id,name')]);
-    if(r.error||b.error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(r.error||b.error)));return}
-    rows=r.data;names=Object.fromEntries(b.data.map(x=>[x.id,x.name]));paint();refreshBadges();
-  }
-  const setStatus=async(r,s)=>{const {error}=await sb.from('reviews').update({status:s}).eq('id',r.id);if(error)return fail(error);toast(s==='approved'?'הביקורת אושרה ותוצג באתר':'הביקורת נדחתה');load()};
-  async function del(r){if(!await confirmDlg('להסיר את הביקורת לצמיתות? הפעולה נרשמת בהיסטוריה וניתנת לשחזור.','הסרה'))return;const {error}=await sb.from('reviews').delete().eq('id',r.id);if(error)return fail(error);toast('הביקורת הוסרה');load()}
-  function paint(){
-    const L=[['pending','ממתינות'],['approved','מאושרות'],['rejected','נדחו'],['all','הכל']];
-    pills.replaceChildren(...L.map(([k,l])=>h('button',{class:'pill'+(filter===k?' on':''),onclick:()=>{filter=k;paint()}},`${l} (${k==='all'?rows.length:rows.filter(r=>r.status===k).length})`)));
-    const list=rows.filter(r=>filter==='all'||r.status===filter);
-    if(!list.length){box.replaceChildren(h('div',{class:'card empty'},'אין ביקורות להצגה.'));return}
-    box.replaceChildren(h('div',{class:'tw'},h('table',{},h('thead',{},h('tr',{},['עסק','דירוג','כותב','ביקורת','תאריך','סטטוס',''].map(x=>h('th',{},x)))),h('tbody',{},list.map(r=>h('tr',{'data-id':r.id},h('td',{},names[r.business_id]||'(עסק נמחק)'),h('td',{},'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)),h('td',{},r.author),h('td',{style:'max-width:320px;white-space:pre-wrap'},r.body),h('td',{},fmtDT(r.created_at)),h('td',{},r.status==='approved'?bdg('מאושרת'):r.status==='rejected'?bdg('נדחתה','b'):bdg('ממתינה','w')),h('td',{class:'ac'},r.status!=='approved'&&btn('אישור','check','',()=>setStatus(r,'approved')),r.status!=='rejected'&&btn('דחייה','x','g',()=>setStatus(r,'rejected')),ibtn('trash','d',()=>del(r),'הסרה'))))))));
-  }
-  watch('reviews',load);await load();
-}
-
-async function pInquiries(root){
-  let rows=[],fs='all',q='';const box=h('div');
-  const sel=h('select',{class:'inp',style:'max-width:180px',onchange:e=>{fs=e.target.value;paint()}},[['all','כל הסטטוסים'],['new','חדשות'],['in_progress','בטיפול'],['done','טופלו']].map(([v,l])=>h('option',{value:v},l)));
-  const inp=h('input',{class:'inp',style:'max-width:240px',placeholder:'חיפוש לפי שם, פרטים או תוכן','aria-label':'חיפוש פניות',oninput:e=>{q=e.target.value.trim().toLowerCase();paint()}});
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'פניות תושבים'),inp,sel),box);
-  async function load(){const {data,error}=await sb.from('inquiries').select('*').order('created_at',{ascending:false});if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}rows=data;paint();refreshBadges()}
-  const setS=async(r,s)=>{const {error}=await sb.from('inquiries').update({status:s}).eq('id',r.id);if(error)return fail(error);load()};
-  async function del(r){if(!await confirmDlg('למחוק את הפנייה?'))return;const {error}=await sb.from('inquiries').delete().eq('id',r.id);if(error)return fail(error);toast('הפנייה נמחקה');load()}
-  function paint(){
-    const L=rows.filter(r=>(fs==='all'||r.status===fs)&&(!q||[r.full_name,r.contact,r.reason,r.message].join(' ').toLowerCase().includes(q)));
-    if(!L.length){box.replaceChildren(h('div',{class:'card empty'},rows.length?'לא נמצאו פניות מתאימות.':'עדיין לא התקבלו פניות.'));return}
-    box.replaceChildren(...L.map(r=>{
-      const ph=phoneLike(r.contact),mail=r.contact&&r.contact.includes('@');
-      return h('div',{class:'card inq','data-id':r.id},h('div',{class:'row'},h('b',{},r.full_name),r.status==='new'?bdg('חדשה','w'):r.status==='in_progress'?bdg('בטיפול'):bdg('טופלה','m'),h('span',{style:'color:#6d7561;font-size:13px;margin-inline-start:auto'},fmtDT(r.created_at))),
-        h('div',{style:'color:#6d7561;font-size:13.5px'},'סיבה: ',r.reason||'-',' · פרטי קשר: ',r.contact),h('p',{},r.message),
-        h('div',{class:'row'},ph&&h('a',{class:'btn',href:telHref(r.contact)},ic('phone',16),'חייג'),ph&&h('a',{class:'btn g',href:waLink(r.contact),target:'_blank',rel:'noopener'},ic('chat',16),'מענה בוואטסאפ'),mail&&h('a',{class:'btn g',href:'mailto:'+r.contact},'מענה במייל'),
-          h('select',{class:'inp',style:'width:auto',onchange:e=>setS(r,e.target.value),'aria-label':'סטטוס פנייה'},[['new','חדשה'],['in_progress','בטיפול'],['done','טופלה']].map(([v,l])=>h('option',{value:v,selected:r.status===v},l))),ibtn('trash','d',()=>del(r),'מחיקה')));
-    }));
-  }
-  watch('inquiries',load);await load();
-}
-
-async function pBoard(root){
-  const speedBox=h('div'),host=h('div');root.replaceChildren(speedBox,host);
-  let st={};try{st=await getSettings()}catch(e){speedBox.replaceChildren(h('div',{class:'err'},errText(e)))}
-  const cur=typeof st.board_speed==='number'?st.board_speed:0.35,lbl=h('b',{},String(cur)),rng=h('input',{type:'range',min:'0.1',max:'1.2',step:'0.05',value:cur,'aria-label':'מהירות לוח המודעות',oninput:e=>lbl.textContent=e.target.value});
-  speedBox.replaceChildren(h('div',{class:'card',style:'margin-bottom:14px'},h('div',{class:'row'},h('b',{},'מהירות התנועה של הלוח'),rng,lbl,btn('שמירה','check','g',async()=>{try{await putSetting('board_speed',Number(rng.value));toast('המהירות עודכנה באתר')}catch(e){fail(e)}}))));
-  await crud(host,{title:'לוח מודעות',table:'announcements',orderable:true,
-    sort:(a,b)=>(Number(b.pinned)-Number(a.pinned))||(a.sort_order-b.sort_order),
-    fields:[T('title','כותרת',1),A('body','תוכן קצר (מוצג בלוח)'),A('full_body','תוכן מלא (נפתח בלחיצה)',0,{rows:5}),IMG('image_url','תמונה','announcements'),B('pinned','הצמדה לראש הלוח'),DT('publish_at','תאריך פרסום'),DT('remove_at','תאריך הסרה אוטומטית'),STATUS_PUB],
-    defaults:{status:'draft'},
-    validate:v=>v.publish_at&&v.remove_at&&v.remove_at<=v.publish_at?'תאריך ההסרה חייב להיות אחרי תאריך הפרסום':null,
-    cols:[['כותרת',r=>h('b',{},r.title)],['סטטוס',statusBdg],['הצמדה',r=>r.pinned?bdg('מוצמדת','w'):''],['פרסום',r=>fmtDT(r.publish_at)||'מיידי'],['הסרה',r=>fmtDT(r.remove_at)||'ללא']],
-    toggle:pubToggle,
-    toDb:v=>({title:v.title,body:v.body,full_body:v.full_body,image_url:v.image_url,pinned:v.pinned,publish_at:v.publish_at,remove_at:v.remove_at,status:v.status}),
-    preview:v=>({title:v.title,sub:v.publish_at?fmtD(v.publish_at):'',body:v.full_body||v.body,img:v.image_url}),
-    empty:'עדיין אין מודעות. האזור מוסתר באתר כל עוד אין מודעות פעילות.'});
-}
-
-async function pPromos(root){
-  let stats={};
-  return crud(root,{title:'פרסומות',table:'promos',orderable:true,
-    init:async()=>{const {data}=await sb.from('promo_stats').select('*');stats=Object.fromEntries((data||[]).map(r=>[r.promo_id,r]));return{}},
-    fields:[T('title','כותרת',1),A('body','טקסט קצר'),IMG('image_url','תמונה / באנר','promos'),SEL('target_type','יעד הלחיצה',[['','ללא יעד'],['biz','עמוד העסקים באתר'],['whatsapp','וואטסאפ'],['url','אתר חיצוני']]),T('target_value','מספר וואטסאפ או כתובת אתר',0,{hint:'וואטסאפ: ספרות או קישור wa.me · אתר: כתובת https://'}),B('is_popup','פרסומת קופצת (כרטיס קטן בפינה עם כפתור סגירה)'),{k:'popup_every_hours',l:'תדירות הופעה של הקופצת (שעות בין הופעות)',t:'num',min:1,max:720},DT('start_at','תחילת קמפיין'),DT('end_at','סיום קמפיין'),B('active','פעילה')],
-    defaults:{active:false,popup_every_hours:24},
-    validate:v=>{if(v.start_at&&v.end_at&&v.end_at<=v.start_at)return 'תאריך הסיום חייב להיות אחרי ההתחלה';if(v.target_type==='whatsapp'&&!(v.target_value&&WA_RE.test(v.target_value)))return 'יעד וואטסאפ: הזינו מספר או קישור wa.me';if(v.target_type==='url'&&!(v.target_value&&/^https:\/\/\S+$/.test(v.target_value)))return 'אתר חיצוני: הכתובת חייבת להתחיל ב-https://';return null},
-    toDb:v=>({title:v.title,body:v.body,image_url:v.image_url,target_type:v.target_type,target_value:v.target_type?v.target_value:null,is_popup:v.is_popup,popup_every_hours:v.popup_every_hours||24,start_at:v.start_at,end_at:v.end_at,active:v.active}),
-    cols:[['כותרת',r=>h('b',{},r.title)],['סוג',r=>r.is_popup?bdg('קופצת','w'):bdg('מתחלפת')],['מצב',r=>r.active?bdg('פעילה'):bdg('כבויה','m')],['קמפיין',r=>(fmtD(r.start_at)||'מיידי')+' – '+(fmtD(r.end_at)||'ללא סיום')],['חשיפות',r=>(stats[r.id]||{}).views||0],['לחיצות',r=>(stats[r.id]||{}).clicks||0]],
-    toggle:{on:r=>r.active,set:(r,on)=>({active:on}),offTitle:'כיבוי',onTitle:'הפעלה'},
-    preview:v=>({title:v.title,sub:'פרסום',body:v.body,img:v.image_url}),
-    empty:'עדיין אין פרסומות. האזור מוסתר באתר כל עוד אין פרסומות פעילות.'});
-}
-
-/* ===== תוכן הקטגוריות ===== */
-const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'].map(d=>[d,'יום '+d]);
-const EV=[T('title','כותרת',1),T('sub','שורת משנה / שעה'),A('text','פירוט'),D('date','תאריך')];
-const SERVICE_ICONS=[['Mail','דואר'],['ShoppingBasket','מכולת'],['Fuel','תחנת דלק'],['Building2','מזכירות'],['Bus','תחבורה'],['Trash2','פינוי גזם'],['Pin','כללי']];
-const SEC={
-  phones:{l:'טלפונים חשובים',f:[T('name','שם הגורם',1),TEL('phone','טלפון'),A('note','הערה')],c:r=>[r.name,r.phone||'ללא מספר'],seed:['כיתת כוננות','צוות צח"י','צוות סח"י וחלוקת מזון','שיטור קהילתי','מוקדי חירום'].map(n=>({name:n}))},
-  services:{l:'שירותים קהילתיים',f:[T('name','שם השירות',1),SEL('icon','אייקון',SERVICE_ICONS),T('hours','שעות / פרטים',0,{hint:'להזין רק מידע מאומת'}),TEL('phone','טלפון'),A('note','הערה')],c:r=>[r.name,r.hours||''],seed:[['דואר','Mail'],['מכולת','ShoppingBasket'],['תחנת דלק 24/7 (בכפוף לאימות)','Fuel'],['מזכירות המושב','Building2'],['תחבורה ציבורית','Bus'],['מועדי פינוי גזם','Trash2']].map(([name,icon])=>({name,icon}))},
-  events:{l:'אירועים ופעילויות',f:EV,c:r=>[r.title,r.sub||fmtD(r.date)]},
-  news:{l:'עדכונים (עמוד העדכונים)',f:[T('title','כותרת',1),A('text','תוכן'),D('date','תאריך')],c:r=>[r.title,fmtD(r.date)]},
-  chabad_events:{l:'חב״ד: אירועים ופעילויות',f:EV,c:r=>[r.title,r.sub||fmtD(r.date)]},
-  chabad_news:{l:'חב״ד: הודעות ופרסומים',f:EV,c:r=>[r.title,fmtD(r.date)]},
-  chabad_kids:{l:'חב״ד: ילדים ומשפחות',f:EV,c:r=>[r.title,r.sub||fmtD(r.date)]},
-  chabad_photos:{l:'חב״ד: תמונות',f:[IMG('src','תמונה','chabad'),T('caption','כיתוב')],c:r=>[r.caption||'(ללא כיתוב)',r.src?'תמונה הועלתה':'']},
-  chabad_contact:{l:'חב״ד: פרטי התקשרות',single:1,f:[T('name','שם איש קשר',1),TEL('phone','טלפון')],c:r=>[r.name,r.phone||'']},
-  prayers:{l:'זמני תפילות',f:[SEL('name','תפילה',[['שחרית','שחרית'],['מנחה','מנחה'],['ערבית','ערבית']],1),T('time','שעה',1,{hint:'לדוגמה 06:30, או נוסח חופשי'})],c:r=>[r.name,r.time]},
-  shabbat:{l:'תפילות בשבתות',f:[T('title','תפילה',1),T('time','שעה',1)],c:r=>[r.title,r.time]},
-  holidays:{l:'תפילות בחגים',f:[T('title','חג / תפילה',1),T('time','שעה',1)],c:r=>[r.title,r.time]},
-  classes:{l:'שיעורי תורה קבועים',f:[T('topic','נושא השיעור',1),T('teacher','שם מעביר השיעור'),SEL('day','יום',[['','לא צוין'],...DAYS]),{k:'time',l:'שעה',t:'time'},T('place','מיקום')],c:r=>[r.topic,[r.teacher,r.day&&'יום '+r.day,r.time,r.place].filter(Boolean).join(' · ')]},
-  religion_updates:{l:'דת וקהילה: עדכונים',f:EV,c:r=>[r.title,fmtD(r.date)]}
-};
-function pContent(root,key){
-  key=SEC[key]?key:'phones';
-  const pills=h('div',{class:'pills'},Object.entries(SEC).map(([k,s])=>h('button',{class:'pill'+(k===key?' on':''),onclick:()=>{location.hash='#/content/'+k}},s.l)));
-  const host=h('div');root.replaceChildren(pills,host);
-  const s=SEC[key],dkeys=s.f.map(f=>f.k);
-  return crud(host,{title:s.l,table:'content_items',eq:{section:key},orderable:true,single:s.single,
-    fields:[...s.f,DT('publish_at','תאריך פרסום'),DT('remove_at','תאריך הסרה'),STATUS_PUB],
-    defaults:{status:'published'},
-    fromDb:r=>r.id?{...r.data,status:r.status,publish_at:r.publish_at,remove_at:r.remove_at}:{status:'published'},
-    toDb:v=>{const data={};dkeys.forEach(k=>{if(v[k]!=null)data[k]=v[k]});return{data,status:v.status,publish_at:v.publish_at,remove_at:v.remove_at}},
-    validate:v=>v.publish_at&&v.remove_at&&v.remove_at<=v.publish_at?'תאריך ההסרה חייב להיות אחרי תאריך הפרסום':null,
-    cols:[['פריט',r=>h('b',{},s.c(r.data||{})[0]||'')],['פרטים',r=>s.c(r.data||{})[1]||''],['סטטוס',statusBdg],['הסרה',r=>fmtD(r.remove_at)||'']],
-    toggle:pubToggle,
-    seed:s.seed&&{label:'הוספת הרשימה הבסיסית (שמות בלבד, ללא פרטים)',rows:()=>s.seed.map((d,i)=>({section:key,data:d,status:'published',sort_order:i*10}))},
-    preview:v=>({title:v.title||v.name||v.topic||v.caption||v.time,sub:[v.sub,v.time,v.hours].filter(Boolean).join(' · '),body:v.text||v.note||[v.teacher,v.place].filter(Boolean).join(' · '),img:v.src}),
-    empty:'עדיין אין פריטים בקטגוריה זו. באתר מוצגת הודעה שהפרטים יתעדכנו.'});
-}
-
-/* ===== העוזר החכם ===== */
-async function pAssistant(root){
-  const host=h('div'),stats=h('div');root.replaceChildren(host,stats);
-  async function paintStats(){
-    const {data,error}=await sb.from('search_stats').select('*').order('hits',{ascending:false}).limit(25);
-    if(error){stats.replaceChildren(h('div',{class:'err'},errText(error)));return}
-    stats.replaceChildren(h('div',{class:'card',style:'margin-top:16px'},h('div',{class:'row'},h('b',{style:'margin-inline-end:auto'},'סטטיסטיקת חיפושים מצטברת (מילים בלבד, ללא פרטים אישיים)'),data.length>0&&btn('איפוס הסטטיסטיקה','trash','d',async()=>{if(!await confirmDlg('לאפס את כל סטטיסטיקת החיפושים?','איפוס'))return;const {error}=await sb.from('search_stats').delete().neq('term','');if(error)return fail(error);paintStats()}) ),data.length?h('table',{style:'margin-top:8px'},h('tbody',{},data.map(t=>h('tr',{},h('td',{},t.term),h('td',{class:'ac'},t.hits))))):h('div',{class:'empty'},'עדיין אין חיפושים.')));
-  }
-  await crud(host,{title:'מאגר הידע של העוזר החכם',table:'kb_entries',
-    init:async()=>{const {data}=await sb.from('businesses').select('id,name').order('name');return{biz:data||[]}},
-    fields:[T('topic','נושא / שאלה',1),A('answer','תשובה',1,{rows:4}),{k:'keywords',l:'מילות מפתח',t:'tags'},{k:'synonyms',l:'מילים נרדפות',t:'tags'},SEL('business_id','המלצה על עסק (אופציונלי)',x=>[['','ללא'],...(x.biz||[]).map(b=>[b.id,b.name])]),B('active','פעיל')],
-    defaults:{active:true},
-    cols:[['נושא',r=>h('b',{},r.topic)],['מילות מפתח',r=>(r.keywords||[]).join(', ')],['סטטוס',r=>r.active?bdg('פעיל'):bdg('כבוי','m')]],
-    toggle:{on:r=>r.active,set:(r,on)=>({active:on}),offTitle:'כיבוי',onTitle:'הפעלה'},
-    toDb:v=>({topic:v.topic,answer:v.answer,keywords:v.keywords,synonyms:v.synonyms,business_id:v.business_id,active:v.active}),
-    preview:v=>({title:v.topic,body:v.answer}),
-    empty:'עדיין אין ידע במאגר. העוזר עונה גם על סמך תוכן האתר עצמו (עסקים, שירותים וטלפונים), ללא צורך בהזנה כאן.'});
-  await paintStats();
-}
-
-/* ===== עיצוב האתר ===== */
-const CATS=[['biz','עסקים'],['news','עדכונים'],['tel','טלפונים חשובים'],['svc','שירותים'],['events','אירועים'],['chabad','אירועי חב״ד'],['religion','דת וקהילה'],['contact','צור קשר'],['ads','מודעות']];
-async function pDesign(root){
-  root.replaceChildren(h('div',{class:'empty'},'טוען...'));
-  let st;try{st=await getSettings()}catch(e){root.replaceChildren(h('div',{class:'err'},errText(e)));return}
-  const texts=Object.assign({news_heading:'',board_heading:''},st.texts||{});
-  let logo=st.logo&&st.logo.url||null;
-  let cats=CATS.map(([key,label])=>({key,label,visible:true}));
-  if(Array.isArray(st.categories)){const m=Object.fromEntries(st.categories.map(c=>[c.key,c]));const ordered=st.categories.map(c=>CATS.find(x=>x[0]===c.key)&&{key:c.key,label:c.label||CATS.find(x=>x[0]===c.key)[1],visible:c.visible!==false}).filter(Boolean);CATS.forEach(([key,label])=>{if(!m[key])ordered.push({key,label,visible:true})});cats=ordered}
-  const catBox=h('div'),prev=h('div',{class:'mini'});
-  const logoImg=h('img',{alt:'',style:logo?'max-width:260px;display:block;margin-top:6px':'display:none',src:logo||null}),logoSt=h('small',{},'');
-  const logoIn=h('input',{type:'file',accept:'image/jpeg,image/png,image/webp,image/gif','data-k':'logo',onchange:async()=>{const f=logoIn.files[0];if(!f)return;logoSt.textContent='מעלה...';try{logo=await uploadImage(f,'logo');logoImg.src=logo;logoImg.style.display='block';logoSt.textContent='הועלה (יתפרסם בלחיצה על פרסום)'}catch(e){logoSt.textContent='';fail(e)}finally{logoIn.value=''}}});
-  const tNews=h('input',{class:'inp','data-k':'news_heading',value:texts.news_heading,placeholder:'הודעות ועדכונים אחרונים',maxlength:80}),tBoard=h('input',{class:'inp','data-k':'board_heading',value:texts.board_heading,placeholder:'לוח מודעות',maxlength:80});
-  function paintCats(){
-    catBox.replaceChildren(...cats.map((c,i)=>h('div',{class:'row',style:'margin-bottom:6px','data-key':c.key},h('input',{class:'inp',style:'max-width:220px',value:c.label,maxlength:30,'aria-label':'שם הקטגוריה',oninput:e=>{c.label=e.target.value;paintPrev()}}),ibtn('up','g',()=>{if(i){[cats[i],cats[i-1]]=[cats[i-1],cats[i]];paintCats()}},'העלאה'),ibtn('down','g',()=>{if(i<cats.length-1){[cats[i],cats[i+1]]=[cats[i+1],cats[i]];paintCats()}},'הורדה'),ibtn(c.visible?'eye':'eyeoff','g',()=>{c.visible=!c.visible;paintCats()},c.visible?'הסתרה':'הצגה'),!c.visible&&bdg('מוסתרת','m'))));paintPrev();
-  }
-  function paintPrev(){prev.replaceChildren(...cats.filter(c=>CATS.find(x=>x[0]===c.key)&&c.key!=='ads').map(c=>h('div',{class:c.visible?'':'hid'},c.label||'(ללא שם)')))}
-  paintCats();
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'עיצוב האתר'),btn('פרסום השינויים באתר','check','',async()=>{
-    const bad=cats.find(c=>!c.label.trim());if(bad)return toast('לכל קטגוריה חייב להיות שם','err');
-    try{await putSetting('logo',{url:logo});await putSetting('texts',{news_heading:tNews.value.trim(),board_heading:tBoard.value.trim()});await putSetting('categories',cats.map(c=>({key:c.key,label:c.label.trim(),visible:c.visible})));toast('השינויים פורסמו באתר')}catch(e){fail(e)}})),
-    h('div',{class:'card',style:'margin-bottom:14px'},h('b',{},'לוגו'),h('div',{},logoIn),logoSt,logoImg),
-    h('div',{class:'card',style:'margin-bottom:14px'},h('b',{},'כותרות וטקסטים'),h('p',{style:'color:#6d7561;font-size:13px;margin:2px 0 8px'},'שדה ריק = הטקסט המקורי של האתר.'),h('label',{class:'fld'},h('span',{},'כותרת אזור העדכונים בעמוד הבית'),tNews),h('label',{class:'fld'},h('span',{},'כותרת לוח המודעות'),tBoard)),
-    h('div',{class:'card'},h('b',{},'קטגוריות: שם, סדר והצגה'),h('p',{style:'color:#6d7561;font-size:13px;margin:2px 0 8px'},'השינויים נשמרים רק בלחיצה על "פרסום השינויים". זו תצוגה מקדימה של כפתורי הניווט:'),catBox,prev));
-}
-
-/* ===== היסטוריית שינויים ושחזור ===== */
-const TNAME={businesses:'עסקים',reviews:'ביקורות',announcements:'מודעות',promos:'פרסומות',content_items:'תוכן',kb_entries:'מאגר ידע'};
-async function pHistory(root){
-  let tf='all',rows=[];const box=h('div');
-  const sel=h('select',{class:'inp',style:'max-width:180px',onchange:e=>{tf=e.target.value;load()}},[['all','כל הטבלאות'],...Object.entries(TNAME)].map(([v,l])=>h('option',{value:v},l)));
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'היסטוריית שינויים'),sel),box);
-  async function load(){let q=sb.from('change_history').select('*').order('changed_at',{ascending:false}).limit(100);if(tf!=='all')q=q.eq('table_name',tf);const {data,error}=await q;if(error){box.replaceChildren(h('div',{class:'err'},'שגיאת טעינה: '+errText(error)));return}rows=data;paint()}
-  const title=r=>{const d=r.new_data||r.old_data||{};return d.name||d.title||d.topic||d.author||(d.data&&(d.data.title||d.data.name||d.data.topic))||r.row_id};
-  function details(r){const o=r.old_data||{},n=r.new_data||{},keys=[...new Set([...Object.keys(o),...Object.keys(n)])].filter(k=>JSON.stringify(o[k])!==JSON.stringify(n[k])&&k!=='updated_at');const m=modal('פרטי השינוי',h('div',{},h('pre',{},keys.length?keys.map(k=>`${k}:\n  לפני: ${JSON.stringify(o[k])}\n  אחרי: ${JSON.stringify(n[k])}`).join('\n'):'אין הבדלים'),h('div',{class:'ft'},btn('סגירה',null,'g',()=>m.close()))),{wide:true})}
-  async function restore(r){
-    const msg=r.action==='INSERT'?'לבטל את ההוספה (הפריט יימחק)?':'לשחזר את הפריט למצב שלפני השינוי?';
-    if(!await confirmDlg(msg,'שחזור'))return;
-    const res=r.action==='INSERT'?await sb.from(r.table_name).delete().eq('id',r.row_id):await sb.from(r.table_name).upsert(r.old_data);
-    if(res.error)return fail(res.error);toast('השחזור בוצע');load();
-  }
-  function paint(){
-    if(!rows.length){box.replaceChildren(h('div',{class:'card empty'},'עדיין אין שינויים מתועדים.'));return}
-    box.replaceChildren(h('div',{class:'tw'},h('table',{},h('thead',{},h('tr',{},['זמן','טבלה','פעולה','פריט',''].map(x=>h('th',{},x)))),h('tbody',{},rows.map(r=>h('tr',{'data-id':r.id},h('td',{},fmtDT(r.changed_at)),h('td',{},TNAME[r.table_name]||r.table_name),h('td',{},r.action==='INSERT'?bdg('הוספה'):r.action==='UPDATE'?bdg('עדכון','w'):bdg('מחיקה','b')),h('td',{},String(title(r)).slice(0,60)),h('td',{class:'ac'},btn('פרטים',null,'g',()=>details(r)),btn('שחזור','undo','',()=>restore(r)))))))));
-  }
-  await load();
-}
-
-/* ===== מעטפת, ניווט והתראות ===== */
-
-async function pDiag(root){
-  const out=h('div'),rep=[];
-  const row=(name,ok,detail)=>{rep.push((ok===true?'[תקין] ':ok===false?'[כשל] ':'[מידע] ')+name+': '+detail);out.append(h('div',{class:'card',style:'margin-bottom:8px'},h('b',{},(ok===true?'תקין · ':ok===false?'כשל · ':'')+name),h('div',{style:'font-size:13.5px;margin-top:4px;word-break:break-word;white-space:pre-wrap',dir:'auto'},detail)))};
-  const step=async(name,fn)=>{try{const d=await fn();row(name,d.ok,d.t)}catch(e){row(name,false,errText(e))}};
-  async function run(){
-    out.replaceChildren();rep.length=0;rep.push('דוח בדיקת חיבור נהורה+ '+new Date().toISOString());
-    let tok=null;
-    await step('סשן והאסימון',async()=>{
-      const {data,error}=await sb.auth.getSession();if(error)throw error;
-      const s=data&&data.session;if(!s)return{ok:false,t:'אין סשן פעיל. יש להתחבר מחדש.'};
-      tok=s.access_token;const c=decodeJwt(tok)||{};
-      const left=Math.round((s.expires_at*1000-Date.now())/60000);
-      const good=c.role==='authenticated';
-      return{ok:good,t:'role='+(c.role||'?')+' · aud='+(c.aud||'?')+' · משתמש='+String(c.sub||'').slice(0,8)+'… · תוקף נותר: '+left+' דקות'+(good?'':'\nהאסימון אינו של משתמש מחובר.')};
-    });
-    await step('פונקציית is_admin',async()=>{const {data,error}=await sb.rpc('is_admin');if(error)throw error;return{ok:data===true,t:data===true?'החשבון מוכר כמנהל':'החשבון אינו מנהל (הוסיפו אותו לטבלת admins)'}});
-    await step('קריאה מטבלת עסקים',async()=>{const {count,error}=await sb.from('businesses').select('*',{count:'exact',head:true});if(error)throw error;return{ok:true,t:'נקראו '+count+' רשומות'}});
-    await step('עמודת אזור וטבלת בקשות (מטמון סכמה)',async()=>{const a=await sb.from('businesses').select('area').limit(1);if(a.error)throw a.error;const q=await sb.from('business_requests').select('id',{count:'exact',head:true});if(q.error)throw q.error;return{ok:true,t:'העמודה area וטבלת business_requests נגישות ('+q.count+' בקשות)'}});
-    await step('כתיבה לבסיס הנתונים',async()=>{const {error}=await sb.from('site_settings').upsert({key:'_diag',value:{t:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'key'});if(error)throw error;return{ok:true,t:'נכתב ערך בדיקה פנימי "_diag" (לא מוצג באתר)'}});
-    await step('העלאת תמונה לאחסון',async()=>{
-      const png=Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=='),c=>c.charCodeAt(0));
-      const path='diag/'+Date.now()+'.png';
-      const up=await sb.storage.from('media').upload(path,new Blob([png],{type:'image/png'}),{contentType:'image/png',upsert:false});
-      if(up.error)throw up.error;
-      const rm=await sb.storage.from('media').remove([path]);
-      if(rm.error)throw rm.error;
-      return{ok:true,t:'העלאה ומחיקה של קובץ בדיקה הצליחו'};
-    });
-    out.append(h('div',{style:'margin-top:10px'},btn('העתקת הדוח','check','g',async()=>{try{await navigator.clipboard.writeText(rep.join('\n'));toast('הדוח הועתק')}catch(e){toast('אי אפשר להעתיק אוטומטית. סמנו את הטקסט ידנית.','err')}})));
-  }
-  root.replaceChildren(h('div',{class:'ph'},h('h2',{},'בדיקת חיבור'),btn('הרצה מחדש','check','g',run)),h('p',{style:'margin-bottom:12px;font-size:14px'},'בדיקה של ההתחברות, ההרשאות, הכתיבה וההעלאה. הדוח אינו כולל אסימונים או סיסמאות.'),out);
-  await run();
-}
-const PAGES=[['dashboard','לוח בקרה','dash',pDashboard],['businesses','עסקים','store',pBusinesses],['bizreq','עסקים ממתינים לאישור','store',pBizReq,'biz'],['reviews','ביקורות','star',pReviews,'rev'],['inquiries','פניות תושבים','inbox',pInquiries,'inq'],['board','לוח מודעות','mega',pBoard],['promos','פרסומות','tag',pPromos],['content','תוכן וקטגוריות','layers',pContent],['assistant','עוזר חכם','bot',pAssistant],['design','עיצוב האתר','pal',pDesign],['history','היסטוריה ושחזור','hist',pHistory],['diag','בדיקת חיבור','check',pDiag]];
-async function refreshBadges(){
-  if(!sb||!session)return;
-  const c=(t,s)=>sb.from(t).select('*',{count:'exact',head:true}).eq('status',s).then(r=>r.count||0,()=>0);
-  const [i,r,bz]=await Promise.all([c('inquiries','new'),c('reviews','pending'),c('business_requests','pending')]);
-  const set=(k,n)=>{const e=document.querySelector(`[data-badge="${k}"]`);if(e){e.textContent=n;e.style.display=n?'':'none'}};
-  set('inq',i);set('rev',r);set('biz',bz);const tot=i+r+bz;document.title=(tot?`(${tot}) `:'')+'ניהול נהורה+';
-}
-function route(){
-  const [pg,sub]=(location.hash.replace(/^#\/?/,'')||'dashboard').split('/');
-  const P=PAGES.find(p=>p[0]===pg)||PAGES[0];
-  clearSubs();
-  document.querySelectorAll('.nv').forEach(n=>n.classList.toggle('on',n.dataset.pg===P[0]));
-  document.querySelector('.side').classList.remove('open');
-  const main=document.getElementById('main');
-  Promise.resolve(P[3](main,sub)).catch(e=>main.replaceChildren(h('div',{class:'err'},'שגיאה: '+errText(e))));
-  main.scrollTop=0;window.scrollTo(0,0);
-}
-function renderShell(user){
-  const side=h('nav',{class:'side','aria-label':'תפריט ניהול'},h('h1',{},'נהורה+ · ניהול'),...PAGES.map(p=>h('button',{class:'nv','data-pg':p[0],onclick:()=>{location.hash='#/'+p[0]}},ic(p[2]),p[1],p[4]&&h('span',{class:'bg','data-badge':p[4],style:'display:none'}))),h('div',{class:'sp'}),
-    'Notification' in window&&Notification.permission==='default'&&h('button',{class:'nv',onclick:e=>{Notification.requestPermission().then(()=>e.target.closest('button').remove())}},ic('bell'),'הפעלת התראות דפדפן'),
-    h('div',{style:'font-size:12px;opacity:.7;padding:4px 10px;word-break:break-all'},user.email),
-    h('button',{class:'nv',onclick:async()=>{manualOut=true;try{await sb.auth.signOut()}catch(e){}teardown();manualOut=false;renderLogin()}},ic('out'),'התנתקות'));
-  app.replaceChildren(h('div',{class:'top'},h('button',{class:'btn g ib','aria-label':'תפריט',onclick:()=>side.classList.toggle('open')},ic('menu')),h('b',{},'ניהול נהורה+')),h('div',{class:'shell'},side,h('main',{class:'main',id:'main'})));
-  shellOn=true;window.addEventListener('hashchange',route);route();refreshBadges();
-  const ch=sb.channel('rt-global-'+(++uid)).on('postgres_changes',{event:'INSERT',schema:'public',table:'inquiries'},p=>{const n=p.new||{};toast('התקבלה פנייה חדשה'+(n.full_name?' מאת '+n.full_name:''));if('Notification' in window&&Notification.permission==='granted')new Notification('פנייה חדשה בנהורה+',{body:n.full_name||''});refreshBadges()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'reviews'},()=>{toast('התקבלה ביקורת חדשה לאישור');refreshBadges()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'business_requests'},p=>{const n=p.new||{};toast('בקשה חדשה להוספת עסק'+(n.name?': '+n.name:''));if('Notification' in window&&Notification.permission==='granted')new Notification('עסק חדש ממתין לאישור',{body:n.name||''});refreshBadges()}).subscribe();
-  window.__globalCh=ch;
-}
-function sessionLost(msg){if(!shellOn)return;teardown();try{sb.auth.signOut({scope:'local'})}catch(e){}renderLogin(msg)}
-function teardown(){shellOn=false;clearSubs();window.removeEventListener('hashchange',route);if(window.__globalCh){sb.removeChannel(window.__globalCh);window.__globalCh=null}session=null;document.title='ניהול נהורה+'}
-
-/* ===== כניסה ===== */
-let fails=0,lockUntil=0;
-function renderLogin(msg){
-  const em=h('input',{type:'email',autocomplete:'username',required:true,'data-k':'email'}),pw=h('input',{type:'password',autocomplete:'current-password',required:true,'data-k':'password'}),err=h('div',{class:'err',style:msg?null:'display:none'},msg||''),go=h('button',{class:'btn',style:'width:100%;justify-content:center'},'כניסה');
-  const form=h('form',{class:'card',novalidate:true},h('label',{class:'fld'},h('span',{},'אימייל'),em),h('label',{class:'fld'},h('span',{},'סיסמה'),pw),err,go);
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();const show=m=>{err.textContent=m;err.style.display=''};
-    if(Date.now()<lockUntil)return show('יותר מדי ניסיונות. נסו שוב בעוד מספר שניות.');
-    if(!em.value.trim()||!pw.value)return show('יש להזין אימייל וסיסמה');
-    go.disabled=true;
-    const {data,error}=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});
-    go.disabled=false;
-    if(error||!data.session){fails++;if(fails>=5){lockUntil=Date.now()+30000;fails=0}return show('פרטי ההתחברות שגויים')}
-    fails=0;session=data.session;
-    const ok=await verifyAdmin(session);if(!ok){session=null;return renderLogin('לחשבון זה אין הרשאת מנהל.')}
-    renderShell(session.user);
-  });
-  app.replaceChildren(h('div',{class:'login'},h('h1',{},'ניהול נהורה+'),h('p',{},'כניסה למנהלי האתר בלבד'),form));
-}
-async function verifyAdmin(s){
-  const {data}=await sb.from('admins').select('user_id').eq('user_id',s.user.id).maybeSingle();
-  if(data)return true;await sb.auth.signOut();return false;
-}
-function renderSetup(){app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'נדרשת הגדרת חיבור'),h('p',{},'יש להזין בראש הקובץ (CFG) את כתובת פרויקט Supabase ואת המפתח הציבורי (anon). לא מזינים מפתח service_role.'))))}
-function renderBootError(message){
-  app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'לא ניתן להפעיל את מערכת הניהול'),h('p',{},message),btn('טעינה מחדש',null,'',()=>location.reload()))));
-}
-async function loadSupabaseLibrary(){
-  const ready=()=>typeof window.supabase?.createClient==='function';
-  if(ready())return true;
-  for(const url of ['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2','https://unpkg.com/@supabase/supabase-js@2']){
-    const ok=await new Promise(resolve=>{
-      const script=document.createElement('script');
-      let done=false;
-      const finish=success=>{if(done)return;done=true;clearTimeout(timer);script.onload=null;script.onerror=null;if(!success)script.remove();resolve(success)};
-      const timer=setTimeout(()=>finish(false),12000);
-      script.onload=()=>finish(ready());script.onerror=()=>finish(false);
-      script.src=url;script.async=true;document.head.append(script);
-    });
-    if(ok||ready())return true;
-  }
-  return false;
-}
-async function boot(){
-  if(!CFG.url||!CFG.key)return renderSetup();
-  if(!/^https:\/\/[^/]+\.supabase\.co\/?$/.test(CFG.url))return renderBootError('כתובת פרויקט Supabase אינה תקינה.');
-  if(typeof window.supabase?.createClient!=='function'){
-    app.replaceChildren(h('div',{class:'login'},h('div',{class:'card'},h('h1',{},'מתחבר למערכת...'),h('p',{},'טוען את ספריית Supabase.'))));
-    const loaded=await loadSupabaseLibrary();
-    if(!loaded)return renderBootError('פרטי החיבור קיימים, אך ספריית Supabase לא נטענה. בדקו את החיבור לאינטרנט או נסו בדפדפן אחר.');
-  }
-  const getS=async()=>{const {data}=await sb.auth.getSession();return data&&data.session};
-  sb=window.supabase.createClient(CFG.url,CFG.key,{global:{fetch:makeAuthFetch({key:CFG.key,getSession:getS,refresh:async()=>{const {data,error}=await sb.auth.refreshSession();if(error)throw error;if(data&&data.session)session=data.session;return data&&data.session},onAuthLost:()=>sessionLost('ההתחברות פגה. יש להתחבר מחדש.')})}});
-  sb.auth.onAuthStateChange((ev,ss)=>{
-    if(ss&&(ev==='TOKEN_REFRESHED'||ev==='SIGNED_IN'))session=ss;
-    if(ev==='SIGNED_OUT'&&shellOn&&!manualOut)setTimeout(()=>sessionLost('ההתחברות הסתיימה. יש להתחבר מחדש.'),0);
-  });
-  const {data}=await sb.auth.getSession();
-  if(data&&data.session){session=data.session;if(await verifyAdmin(session))return renderShell(session.user);session=null;return renderLogin('לחשבון זה אין הרשאת מנהל.')}
-  renderLogin();
-}
-boot().catch(e=>{console.error('[admin boot]',e);renderBootError(errText(e))});
-})();
 </script>
 </body>
 </html>
